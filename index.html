@@ -5847,6 +5847,7 @@ const APK_HADITH_3507 = {
   narrator:"Abu Hurairah",
   grade:"Da'if (Darussalam)",
   reference:"Jami' at-Tirmidhi 3507",
+  arabic:`إِنَّ لِلَّهِ تِسْعَةً وَتِسْعِينَ اسْمًا، مِائَةً إِلَّا وَاحِدًا، مَنْ أَحْصَاهَا دَخَلَ الْجَنَّةَ. هُوَ اللَّهُ الَّذِي لَا إِلَٰهَ إِلَّا هُوَ، ${ASMA.map(a=>a[0].replace(/[ًٌٍَُِّْٰـ]/g,"")).join("، ")}.`,
   text:`Telah menceritakan kepada kami Ibrahim bin Ya'qub Al Jurajani telah menceritakan kepada kami Shafwan bin Shalih telah menceritakan kepada kami Al Walid bin Muslim telah menceritakan kepada kami Syu'aib bin Abu Hamzah dari Abu Az Zinad dari Al A'raj dari Abu Hurairah ia berkata; Rasulullah (ﷺ) bersabda: <b>"Sesungguhnya Allah ta'ala memiliki sembilan puluh sembilan nama, seratus kurang satu. Barang siapa yang hafal, mengamalkan dan membenarkannya akan masuk Surga. Yaitu; Allah yang tidak ada tuhan yang berhak disembah kecuali Dia, Ar Rahman, Ar Rahim, Al Malik, Al Quddus, As Salamu, Al Mukmin, Al Muhaiminu, Al 'Aziz, Al Jabbar, Al Mutakabbir, Al Khaliq, Al Bari-u, Al Mushawwiru, Al Ghaffaru, Al Qahhar, Al Wahhab, Ar Razzaq, Al Fattah, Al 'Alim, Al Qabidh, Al Basith, Al Khafidh, Al Mu'iz, Al Mudzill, As Sami', Al Bashir, Al Hakam, Al 'Adlu, Al Lathif, Al Khabir, Al Halim, Al 'Azhim, Al Qhafur, Asy Syakur, Al 'Aliyyu, Al Kabir, Al Hafizh, Al Muqitu, Al Hasib, Al Jalil, Al Karim, Ar Raqib, Al Mujib, Al Wasi', Al Hakim, Al Wadud, Al Majid, Al Ba'its, Asy Syahid, Al Haqqu, Al Wakil, Al Qawiyyu, Al Matin, Al Waliyyu, Al Hamid, Al Muhshi, Al Mubdi', Al Mu'id, Al Muhyi, Al Mumit, Al Hayyu, Al Qayyum, Al Wajid, Al Majid, Al Wahid, Ash Shamad, Al Qadir, Al Muqtadir, Al Muqaddim, Al Muakhkhir, Al Awwalu, Al Akhir, Azh Zhahir, Al Bathin, Al Wali, Al Muta' Ali, Al Barru, At Tawwab, Al Muntaqimu, Al Qafuwwu, Ar Rauf, Malikul Mulk, Dzul Jalal wal Ikram, Al Muqsith, Al Jami', Al Ghani, Al Mani', Adh Dharr, An Nafi', Al Hadi, Al Badi', Al Baqi, Al Warits, Ar Rasyid, Ash Shabur."</b><br><br><br><i><b>Gred: Da'if</b> (Darussalam)</i><br><br>Referensi: Jami' at-Tirmidhi 3507`
 };
 
@@ -5858,6 +5859,7 @@ function apkHadith3507View(){
     +'<h1 class="h1">Hadis riwayat at-Tirmidhi</h1>'
     +'<div class="card">'
     +'<div class="section-title" style="margin-top:0"><h2>Riwayat</h2></div>'
+    +'<div class="hadith-arabic" dir="rtl" lang="ar" style="font-family:var(--arabic-font,serif);font-size:1.55rem;line-height:2.25;text-align:right;padding:14px 2px;border-bottom:1px solid var(--border);margin-bottom:14px">'+esc(h.arabic)+'</div>'
     +'<div class="arabic-translation" style="border:none;padding:0;margin-top:0">'+h.text+'</div>'
     +'<div class="arabic-meta" style="margin-top:14px"><span class="arabic-src">'+esc(h.reference)+' · Riwayat '+esc(h.narrator)+'</span></div>'
     +'</div>'
@@ -6397,15 +6399,13 @@ const APK_DALIL_REF = {
   // APK 1.9.2 menampilkan hadis Jami' at-Tirmidhi 3507 pada Ar-Rahmaan.
   // Perawi yang ditampilkan: Abu Hurairah. Item dibuat sebagai entri dalil
   // tersendiri dan selalu dapat diketuk menuju detail hadis lokal APK.
-  if(num===1){
-    dalilItems.push({
-      type:"hadith",
-      title:"Hadis riwayat at-Tirmidhi",
-      narrator:"Abu Hurairah",
-      number:3507,
-      route:"#/hadith/tirmidzi/3507"
-    });
-  }
+  dalilItems.push({
+    type:"hadith",
+    title:"Hadis riwayat at-Tirmidhi",
+    narrator:"Abu Hurairah",
+    number:3507,
+    route:"#/hadith/tirmidzi/3507"
+  });
   let h='<div class="page asma-detail">'
     +'<div class="asma-top-bar"><button class="icon-btn" data-action="back" data-fallback="#/asmaul-husna" aria-label="Kembali">'+icon("back",22)+'</button>'
     +'<div class="asma-top-actions"><button class="icon-btn" data-action="bookmark" data-id="'+e.id+'" aria-label="Simpan">'+(inCollection(e.id)?icon("bookmarkFill",20):icon("bookmark",20))+'</button>'
