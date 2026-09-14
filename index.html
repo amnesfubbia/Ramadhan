@@ -641,6 +641,10 @@ html[data-theme="dark"] .cal-cell.today .dot{background:#062B1A}
 
 /* ---------- Asmaul Husna: grid & halaman detail ---------- */
 .asma-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+/* Urutan APK: 01 kanan, 02 kiri, 03 kanan pada baris berikutnya. */
+.asma-grid{direction:rtl}
+.asma-card{direction:ltr}
+.asma-card-top .asma-ar{direction:rtl}
 .asma-card{position:relative;background:var(--surface-2);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--border)}
 .asma-card-top{position:relative;min-height:84px;display:flex;align-items:center;justify-content:center;padding:10px 8px}
 .asma-num{position:absolute;top:6px;left:6px;background:var(--accent);color:#04231d;font-weight:800;font-size:calc(10.5px * var(--font-scale));padding:2px 6px;border-radius:5px}
@@ -667,6 +671,7 @@ html[data-theme="dark"] .cal-cell.today .dot{background:#062B1A}
 .asma-panel-arti{font-style:italic;font-size:calc(15px * var(--font-scale))}
 .asma-dalil-btn{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--accent);font-size:calc(11px * var(--font-scale));font-weight:700;background:none;border:none;cursor:pointer;flex:none}
 .asma-block{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-top:12px}
+.asma-dalil-item{padding:11px 0;border-bottom:1px solid var(--border);font-size:calc(13px * var(--font-scale))}.asma-dalil-item:last-child{border-bottom:0}.asma-dalil-item strong{font-weight:800;color:var(--text)}
 .asma-block-title{color:var(--accent);font-weight:800;margin-bottom:8px;font-size:calc(13.5px * var(--font-scale))}
 .asma-manfaat-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
 .asma-manfaat-title{color:var(--accent);font-weight:700;font-size:calc(13.5px * var(--font-scale))}
@@ -6169,9 +6174,17 @@ function asmaEntryView(e){
   const keterangan=src.explain || "";
   const manfaat=src.benefit || "";
   const arti=src.means || e.arabic.arti || "";
-  // Dalil pada APK disajikan sebagai dalil umum Asmaul Husna, bukan dipaksakan
-  // menjadi dalil khusus tiap nama ketika APK tidak menyediakan relasi per nama.
-  const dalil="QS. Taha 20:8 — Allah mempunyai Asmaul Husna.\n\nQS. Al-Isra 17:110 — Allah memiliki Asmaul Husna dan dapat diseru dengan nama-nama-Nya.\n\nQS. Al-A'raf 7:180 — Allah memiliki nama-nama yang terbaik dan diperintahkan untuk berdoa dengan menyebutnya.";
+  // Dalil mengikuti data yang terverifikasi dari APK sumber.
+  // Ar-Rahman (01): Al-Faatihah 1, Al-Faatihah 3, Yaa Siin 52, dan Hadis at-Tirmidhi.
+  const APK_DALIL = {
+    "1": [
+      {type:"quran", title:"Al-Faatihah", ayat:1},
+      {type:"quran", title:"Al-Faatihah", ayat:3},
+      {type:"quran", title:"Yaa Siin", ayat:52},
+      {type:"hadith", title:"Hadis riwayat at-Tirmidhi"}
+    ]
+  };
+  const dalilItems = APK_DALIL[String(num)] || [];
   let h='<div class="page asma-detail">'
     +'<div class="asma-top-bar"><button class="icon-btn" data-action="back" data-fallback="#/asmaul-husna" aria-label="Kembali">'+icon("back",22)+'</button>'
     +'<div class="asma-top-actions"><button class="icon-btn" data-action="bookmark" data-id="'+e.id+'" aria-label="Simpan">'+(inCollection(e.id)?icon("bookmarkFill",20):icon("bookmark",20))+'</button>'
@@ -6180,7 +6193,9 @@ function asmaEntryView(e){
     +'<div class="asma-detail-arabic" dir="rtl" lang="ar">'+esc(e.arabic.text)+'</div><div class="asma-detail-name">'+esc(e.arabic.translit||e.title)+'</div></div>'
     +'<div class="asma-panel"><div class="asma-panel-head"><div><div class="asma-panel-title">Arti</div><div class="asma-panel-arti">'+esc(arti)+'</div></div>'
     +'<button class="asma-dalil-btn" data-action="asma-dalil" data-target="asma-dalil-'+e.id+'">'+icon("info",20)+'<span>Lihat Dalil</span></button></div></div>'
-    +'<div class="asma-block" id="asma-dalil-'+e.id+'" style="display:none"><div class="asma-block-title">Dalil</div><div>'+arabicize(esc(dalil))+'</div><div class="tiny muted" style="margin-top:8px">Dalil umum Asmaul Husna mengikuti materi Dalil pada APK sumber.</div></div>'
+    +'<div class="asma-block" id="asma-dalil-'+e.id+'" style="display:none"><div class="asma-block-title">Dalil</div>'
+    +(dalilItems.length ? dalilItems.map(x=>'<div class="asma-dalil-item"><strong>'+esc(x.title)+'</strong>'+(x.ayat?'<div class="muted" style="margin-top:3px">Ayat '+x.ayat+'</div>':'')+'</div>').join('') : '<div class="muted">Data dalil khusus APK belum tersedia pada entri ini.</div>')
+    +'</div>'
     +'<div class="asma-block"><div class="asma-block-title">Keterangan</div><div>'+arabicize(esc(keterangan))+'</div></div>'
     +'<div class="asma-manfaat-row"><span class="asma-manfaat-title">Manfaat Membaca</span><label class="switch"><input type="checkbox" data-toggle-target="asma-manfaat-'+e.id+'"><i></i></label></div>'
     +'<div class="asma-manfaat-content" id="asma-manfaat-'+e.id+'">'+arabicize(manfaat)+'</div>'
