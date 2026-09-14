@@ -755,6 +755,20 @@ footer.app-foot{text-align:center;color:var(--text-3);font-size:calc(10.5px * va
 .asma-apk-img{width:min(180px,55vw);max-height:150px;object-fit:contain;margin:4px auto 10px;border-radius:10px}
 .asma-source-label{font-size:calc(10px*var(--font-scale));color:var(--text-3);margin-top:7px}
 </style>
+
+<style id="SILMIKAFFAH_ASMA_DALIL_CLICK_BOOT_FIX">
+.asma-dalil-item{position:relative;cursor:pointer;padding-right:34px;transition:background .15s,transform .15s}
+.asma-dalil-item:hover{background:var(--surface-2)}
+.asma-dalil-item:active{transform:scale(.99)}
+.asma-dalil-item .chev{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--text-3)}
+#boot-shell{min-height:calc(100vh - 110px);display:flex;align-items:flex-start;justify-content:center;padding:22px 14px}
+.boot-card{width:min(680px,100%);border:1px solid var(--border);background:var(--surface);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+.boot-brand{font-weight:900;letter-spacing:.08em;font-size:18px;margin-bottom:18px}
+.boot-line{height:12px;border-radius:999px;background:var(--surface-2);margin:10px 0}
+.boot-line.w1{width:42%}.boot-line.w2{width:72%}.boot-line.w3{width:56%}
+.boot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
+.boot-box{height:76px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border)}
+</style>
 </head>
 <body>
 
@@ -786,7 +800,9 @@ footer.app-foot{text-align:center;color:var(--text-3);font-size:calc(10.5px * va
 </aside>
 
 <!-- ===== MAIN ===== -->
-<main id="app-main" class="app-main" tabindex="-1"></main>
+<main id="app-main" class="app-main" tabindex="-1">
+  <div id="boot-shell" aria-label="Memuat SILMIKAFFAH"><div class="boot-card"><div class="boot-brand">SILMIKAFFAH</div><div class="boot-line w1"></div><div class="boot-line w2"></div><div class="boot-line w3"></div><div class="boot-grid"><div class="boot-box"></div><div class="boot-box"></div><div class="boot-box"></div><div class="boot-box"></div></div></div></div>
+</main>
 
 <!-- ===== BOTTOM NAV ===== -->
 <nav id="bottom-nav" class="bottom-nav" aria-label="Navigasi bawah">
@@ -1585,6 +1601,7 @@ DBQ.AYAT = {
   "1:5": {s:1, a:5, arab:"إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ", arti:"Hanya kepada Engkau kami menyembah dan hanya kepada Engkau kami memohon pertolongan."},
   "1:6": {s:1, a:6, arab:"اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ", arti:"Tunjukilah kami jalan yang lurus."},
   "1:7": {s:1, a:7, arab:"صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ", arti:"(Yaitu) jalan orang-orang yang telah Engkau beri nikmat; bukan (jalan) mereka yang dimurkai dan bukan pula (jalan) orang-orang yang sesat."},
+  "36:52": {s:36, a:52, arab:"قَالُوا۟ يَـٰوَيْلَنَا مَنۢ بَعَثَنَا مِن مَّرْقَدِنَا ۜ ۗ هَـٰذَا مَا وَعَدَ ٱلرَّحْمَـٰنُ وَصَدَقَ ٱلْمُرْسَلُونَ", arti:"Mereka berkata, \"Celakalah kami! Siapakah yang membangkitkan kami dari tempat tidur kami (kubur)?\" Inilah yang dijanjikan (Allah) Yang Maha Pengasih dan benarlah rasul-rasul(-Nya)."},
   "2:255": {s:2, a:255, arab:"اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَن ذَا الَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ", arti:"Allah, tidak ada tuhan selain Dia, Yang Maha Hidup, Yang terus-menerus mengurus (makhluk-Nya); tidak mengantuk dan tidak tidur. Milik-Nya apa yang ada di langit dan di bumi. Tidak ada yang dapat memberi syafaat di sisi-Nya tanpa izin-Nya. Dia mengetahui apa yang ada di hadapan dan di belakang mereka, dan mereka tidak mengetahui sesuatu apa pun dari ilmu-Nya melainkan apa yang Dia kehendaki. Kursi-Nya meliputi langit dan bumi, dan Dia tidak merasa berat memelihara keduanya. Dia Maha Tinggi lagi Maha Besar."},
   "103:1": {s:103, a:1, arab:"وَالْعَصْرِ", arti:"Demi masa."},
   "103:2": {s:103, a:2, arab:"إِنَّ الْإِنسَانَ لَفِي خُسْرٍ", arti:"Sungguh, manusia berada dalam kerugian."},
@@ -6176,13 +6193,118 @@ function asmaEntryView(e){
   const arti=src.means || e.arabic.arti || "";
   // Dalil mengikuti data yang terverifikasi dari APK sumber.
   // Ar-Rahman (01): Al-Faatihah 1, Al-Faatihah 3, Yaa Siin 52, dan Hadis at-Tirmidhi.
+  /*
+   * DALIL ASMAUL HUSNA 01-99
+   * 01 mempertahankan 4 rujukan yang terlihat pada APK sumber.
+   * 02-99 diisi dengan rujukan ayat/hadis per nama berdasarkan tabel rujukan
+   * eksternal yang dapat diverifikasi; jangan menyebutnya sebagai salinan
+   * database internal APK bila APK tidak menyediakan mapping tersebut.
+   */
   const APK_DALIL = {
-    "1": [
-      {type:"quran", title:"Al-Faatihah", ayat:1},
-      {type:"quran", title:"Al-Faatihah", ayat:3},
-      {type:"quran", title:"Yaa Siin", ayat:52},
-      {type:"hadith", title:"Hadis riwayat at-Tirmidhi"}
-    ]
+    "1":[
+      {type:"quran",title:"Al-Faatihah",ayat:1,route:"#/quran/ayat/1:1"},
+      {type:"quran",title:"Al-Faatihah",ayat:3,route:"#/quran/ayat/1:3"},
+      {type:"quran",title:"Yaa Siin",ayat:52,route:"#/quran/ayat/36:52"},
+      {type:"hadith",title:"Hadis riwayat at-Tirmidhi",number:3507,route:"#/hadith/tirmidzi/3507"}
+    ],
+    "2":[{type:"quran",title:"Al-Faatihah",ayat:3,route:"#/quran/ayat/1:3"}],
+    "3":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "4":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "5":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "6":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "7":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "8":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "9":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "10":[{type:"quran",title:"Al-Hasyr",ayat:23,route:"#/quran/ayat/59:23"}],
+    "11":[{type:"quran",title:"Al-Hasyr",ayat:24,route:"#/quran/ayat/59:24"}],
+    "12":[{type:"quran",title:"Al-Hasyr",ayat:24,route:"#/quran/ayat/59:24"}],
+    "13":[{type:"quran",title:"Al-Hasyr",ayat:24,route:"#/quran/ayat/59:24"}],
+    "14":[{type:"quran",title:"Thaahaa",ayat:82,route:"#/quran/ayat/20:82"}],
+    "15":[{type:"quran",title:"Yusuf",ayat:39,route:"#/quran/ayat/12:39"}],
+    "16":[{type:"quran",title:"Shaad",ayat:9,route:"#/quran/ayat/38:9"}],
+    "17":[{type:"quran",title:"Adz-Dzaariyat",ayat:58,route:"#/quran/ayat/51:58"}],
+    "18":[{type:"quran",title:"Saba’",ayat:26,route:"#/quran/ayat/34:26"}],
+    "19":[{type:"quran",title:"Al-Baqarah",ayat:29,route:"#/quran/ayat/2:29"}],
+    "20":[{type:"hadith",title:"Hadis riwayat Bukhari-Muslim",ref:"HR. Bukhari dan Muslim"}],
+    "21":[{type:"hadith",title:"Hadis riwayat Muslim",ref:"HR. Muslim"}],
+    "22":[{type:"quran",title:"Al-Waaqi’ah",ayat:3,route:"#/quran/ayat/56:3"}],
+    "23":[{type:"quran",title:"Al-Mujaadilah",ayat:11,route:"#/quran/ayat/58:11"}],
+    "24":[{type:"quran",title:"Ali ‘Imran",ayat:26,route:"#/quran/ayat/3:26"}],
+    "25":[{type:"quran",title:"Ali ‘Imran",ayat:26,route:"#/quran/ayat/3:26"}],
+    "26":[{type:"quran",title:"Al-Israa’",ayat:1,route:"#/quran/ayat/17:1"}],
+    "27":[{type:"quran",title:"Asy-Syuuraa",ayat:11,route:"#/quran/ayat/42:11"}],
+    "28":[{type:"quran",title:"Al-An’aam",ayat:62,route:"#/quran/ayat/6:62"}],
+    "29":[{type:"quran",title:"Al-An’aam",ayat:115,route:"#/quran/ayat/6:115"}],
+    "30":[{type:"quran",title:"Al-Hajj",ayat:63,route:"#/quran/ayat/22:63"}],
+    "31":[{type:"quran",title:"Al-An’aam",ayat:18,route:"#/quran/ayat/6:18"}],
+    "32":[{type:"quran",title:"Al-Israa’",ayat:44,route:"#/quran/ayat/17:44"}],
+    "33":[{type:"quran",title:"Al-Baqarah",ayat:255,route:"#/quran/ayat/2:255"}],
+    "34":[{type:"quran",title:"Faathir",ayat:30,route:"#/quran/ayat/35:30"}],
+    "35":[{type:"quran",title:"Faathir",ayat:30,route:"#/quran/ayat/35:30"}],
+    "36":[{type:"quran",title:"Al-Baqarah",ayat:255,route:"#/quran/ayat/2:255"}],
+    "37":[{type:"quran",title:"Ar-Ra’d",ayat:9,route:"#/quran/ayat/13:9"}],
+    "38":[{type:"quran",title:"Huud",ayat:57,route:"#/quran/ayat/11:57"}],
+    "39":[{type:"quran",title:"An-Nisaa’",ayat:85,route:"#/quran/ayat/4:85"}],
+    "40":[{type:"quran",title:"An-Nisaa’",ayat:86,route:"#/quran/ayat/4:86"}],
+    "41":[{type:"quran",title:"Ar-Rahmaan",ayat:27,route:"#/quran/ayat/55:27"}],
+    "42":[{type:"quran",title:"Al-Infithaar",ayat:6,route:"#/quran/ayat/82:6"}],
+    "43":[{type:"quran",title:"An-Nisaa’",ayat:1,route:"#/quran/ayat/4:1"}],
+    "44":[{type:"quran",title:"Huud",ayat:61,route:"#/quran/ayat/11:61"}],
+    "45":[{type:"quran",title:"Al-Baqarah",ayat:268,route:"#/quran/ayat/2:268"}],
+    "46":[{type:"quran",title:"Luqman",ayat:27,route:"#/quran/ayat/31:27"}],
+    "47":[{type:"quran",title:"Huud",ayat:90,route:"#/quran/ayat/11:90"}],
+    "48":[{type:"quran",title:"Huud",ayat:73,route:"#/quran/ayat/11:73"}],
+    "49":[{type:"quran",title:"Al-Hajj",ayat:7,route:"#/quran/ayat/22:7"}],
+    "50":[{type:"quran",title:"Fushshilat",ayat:53,route:"#/quran/ayat/41:53"}],
+    "51":[{type:"quran",title:"Al-Hajj",ayat:6,route:"#/quran/ayat/22:6"}],
+    "52":[{type:"quran",title:"An-Nisaa’",ayat:81,route:"#/quran/ayat/4:81"}],
+    "53":[{type:"quran",title:"Al-Hajj",ayat:40,route:"#/quran/ayat/22:40"}],
+    "54":[{type:"quran",title:"Adz-Dzaariyat",ayat:58,route:"#/quran/ayat/51:58"}],
+    "55":[{type:"quran",title:"An-Nisaa’",ayat:45,route:"#/quran/ayat/4:45"}],
+    "56":[{type:"quran",title:"Ibrahim",ayat:8,route:"#/quran/ayat/14:8"}],
+    "57":[{type:"quran",title:"Al-Jinn",ayat:28,route:"#/quran/ayat/72:28"}],
+    "58":[{type:"quran",title:"Yunus",ayat:34,route:"#/quran/ayat/10:34"}],
+    "59":[{type:"quran",title:"Yunus",ayat:34,route:"#/quran/ayat/10:34"}],
+    "60":[{type:"quran",title:"Ar-Ruum",ayat:50,route:"#/quran/ayat/30:50"}],
+    "61":[{type:"quran",title:"Ali ‘Imran",ayat:156,route:"#/quran/ayat/3:156"}],
+    "62":[{type:"quran",title:"Al-Baqarah",ayat:255,route:"#/quran/ayat/2:255"}],
+    "63":[{type:"quran",title:"Al-Baqarah",ayat:255,route:"#/quran/ayat/2:255"}],
+    "64":[{type:"hadith",title:"Hadis riwayat Ibnu Majah",ref:"HR. Ibnu Majah (rujukan hadis shahih)"}],
+    "65":[{type:"quran",title:"Huud",ayat:73,route:"#/quran/ayat/11:73"}],
+    "66":[{type:"quran",title:"Al-Ikhlaash",ayat:1,route:"#/quran/ayat/112:1"}],
+    "67":[{type:"quran",title:"Al-Ikhlaash",ayat:1,route:"#/quran/ayat/112:1"}],
+    "68":[{type:"quran",title:"Al-Ikhlaash",ayat:2,route:"#/quran/ayat/112:2"}],
+    "69":[{type:"quran",title:"Al-An’aam",ayat:65,route:"#/quran/ayat/6:65"}],
+    "70":[{type:"quran",title:"Al-Qamar",ayat:42,route:"#/quran/ayat/54:42"}],
+    "71":[{type:"hadith",title:"Hadis riwayat at-Tirmidhi",ref:"HR. at-Tirmidhi (rujukan hadis shahih)"}],
+    "72":[{type:"hadith",title:"Hadis riwayat at-Tirmidhi",ref:"HR. at-Tirmidhi (rujukan hadis shahih)"}],
+    "73":[{type:"quran",title:"Al-Hadiid",ayat:3,route:"#/quran/ayat/57:3"}],
+    "74":[{type:"quran",title:"Al-Hadiid",ayat:3,route:"#/quran/ayat/57:3"}],
+    "75":[{type:"quran",title:"Al-Hadiid",ayat:3,route:"#/quran/ayat/57:3"}],
+    "76":[{type:"quran",title:"Al-Hadiid",ayat:3,route:"#/quran/ayat/57:3"}],
+    "77":[{type:"quran",title:"Ar-Ra’d",ayat:11,route:"#/quran/ayat/13:11"}],
+    "78":[{type:"quran",title:"Ar-Ra’d",ayat:9,route:"#/quran/ayat/13:9"}],
+    "79":[{type:"quran",title:"Ath-Thuur",ayat:28,route:"#/quran/ayat/52:28"}],
+    "80":[{type:"quran",title:"Al-Baqarah",ayat:128,route:"#/quran/ayat/2:128"}],
+    "81":[{type:"quran",title:"As-Sajdah",ayat:22,route:"#/quran/ayat/32:22"}],
+    "82":[{type:"quran",title:"An-Nisaa’",ayat:99,route:"#/quran/ayat/4:99"}],
+    "83":[{type:"quran",title:"At-Taubah",ayat:117,route:"#/quran/ayat/9:117"}],
+    "84":[{type:"quran",title:"Ali ‘Imran",ayat:26,route:"#/quran/ayat/3:26"}],
+    "85":[{type:"quran",title:"Ar-Rahmaan",ayat:27,route:"#/quran/ayat/55:27"}],
+    "86":[{type:"quran",title:"Ali ‘Imran",ayat:18,route:"#/quran/ayat/3:18"}],
+    "87":[{type:"quran",title:"Ali ‘Imran",ayat:9,route:"#/quran/ayat/3:9"}],
+    "88":[{type:"quran",title:"Al-Baqarah",ayat:263,route:"#/quran/ayat/2:263"}],
+    "89":[{type:"quran",title:"At-Taubah",ayat:28,route:"#/quran/ayat/9:28"}],
+    "90":[{type:"hadith",title:"Hadis riwayat at-Tirmidhi",ref:"HR. at-Tirmidhi (rujukan hadis shahih)"}],
+    "91":[{type:"hadith",title:"Hadis riwayat at-Tirmidhi",ref:"HR. at-Tirmidhi (rujukan hadis shahih)"}],
+    "92":[{type:"quran",title:"Ar-Ruum",ayat:37,route:"#/quran/ayat/30:37"}],
+    "93":[{type:"quran",title:"An-Nuur",ayat:35,route:"#/quran/ayat/24:35"}],
+    "94":[{type:"quran",title:"Al-Hajj",ayat:54,route:"#/quran/ayat/22:54"}],
+    "95":[{type:"quran",title:"Al-Baqarah",ayat:117,route:"#/quran/ayat/2:117"}],
+    "96":[{type:"quran",title:"Ar-Rahmaan",ayat:27,route:"#/quran/ayat/55:27"}],
+    "97":[{type:"quran",title:"Al-Hijr",ayat:23,route:"#/quran/ayat/15:23"}],
+    "98":[{type:"quran",title:"Huud",ayat:87,route:"#/quran/ayat/11:87"}],
+    "99":[{type:"hadith",title:"Hadis shahih riwayat Ahmad",ref:"Hadis shahih riwayat Ahmad"}]
   };
   const dalilItems = APK_DALIL[String(num)] || [];
   let h='<div class="page asma-detail">'
@@ -6194,7 +6316,7 @@ function asmaEntryView(e){
     +'<div class="asma-panel"><div class="asma-panel-head"><div><div class="asma-panel-title">Arti</div><div class="asma-panel-arti">'+esc(arti)+'</div></div>'
     +'<button class="asma-dalil-btn" data-action="asma-dalil" data-target="asma-dalil-'+e.id+'">'+icon("info",20)+'<span>Lihat Dalil</span></button></div></div>'
     +'<div class="asma-block" id="asma-dalil-'+e.id+'" style="display:none"><div class="asma-block-title">Dalil</div>'
-    +(dalilItems.length ? dalilItems.map(x=>'<div class="asma-dalil-item"><strong>'+esc(x.title)+'</strong>'+(x.ayat?'<div class="muted" style="margin-top:3px">Ayat '+x.ayat+'</div>':'')+'</div>').join('') : '<div class="muted">Data dalil khusus APK belum tersedia pada entri ini.</div>')
+    +(dalilItems.length ? dalilItems.map(x=>x.route ? '<div class="asma-dalil-item tappable" data-nav="'+esc(x.route)+'" role="link" tabindex="0"><strong>'+esc(x.title)+'</strong>'+(x.ayat?'<div class="muted" style="margin-top:3px">Ayat '+x.ayat+'</div>':'')+(x.number?'<div class="muted" style="margin-top:3px">Jami\' at-Tirmidzi no. '+x.number+'</div>':'')+'<span class="chev">'+icon("chev",16)+'</span></div>' : '<div class="asma-dalil-item tappable" data-action="asma-dalil-info" data-title="'+esc(x.title)+'" data-ref="'+esc(x.ref||x.title)+'" role="button" tabindex="0"><strong>'+esc(x.title)+'</strong><div class="muted" style="margin-top:3px">'+esc(x.ref||'Lihat referensi')+'</div><span class="chev">'+icon("chev",16)+'</span></div>').join('') : '<div class="muted">Dalil belum tersedia.</div>')
     +'</div>'
     +'<div class="asma-block"><div class="asma-block-title">Keterangan</div><div>'+arabicize(esc(keterangan))+'</div></div>'
     +'<div class="asma-manfaat-row"><span class="asma-manfaat-title">Manfaat Membaca</span><label class="switch"><input type="checkbox" data-toggle-target="asma-manfaat-'+e.id+'"><i></i></label></div>'
@@ -9368,6 +9490,9 @@ function bindActions(){
       else if(act==="asma-dalil"){
         const box = $(el.dataset.target); if(box) box.style.display = box.style.display==="none" ? "block" : "none";
       }
+      else if(act==="asma-dalil-info"){
+        openModal('<div class="modal-title">'+esc(el.dataset.title||"Dalil")+'</div><p class="muted" style="line-height:1.6">'+esc(el.dataset.ref||"")+'</p><div class="modal-actions"><button data-role="cancel">TUTUP</button></div>', wrap=>{ const b=wrap.querySelector('[data-role="cancel"]'); if(b) b.onclick=closeModal; });
+      }
       else if(act==="asma-audio-fab"){
         const id=el.dataset.id; asmaApkPlay("s01",+String(id).split("-")[1]);
       }
@@ -9754,7 +9879,7 @@ function init(){
   });
 }
 App.router = router; // hook untuk pengujian & debugging
-if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init); else init();
+// INIT DITUNDA sampai seluruh patch/data di bawah file selesai dimuat.
 </script>
 
 
@@ -10039,5 +10164,12 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 })();
 </script>
 
+
+<script id="SILMIKAFFAH_FINAL_INIT_20260914">
+(function(){
+  function boot(){ if(window.__SILMIKAFFAH_STARTED) return; window.__SILMIKAFFAH_STARTED=true; try{ init(); }catch(err){ console.error(err); } }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot,{once:true}); else boot();
+})();
+</script>
 </body>
 </html>
