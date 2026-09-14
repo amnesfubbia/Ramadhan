@@ -5861,7 +5861,7 @@ function apkHadith3507View(){
     +'<div class="arabic-translation" style="border:none;padding:0;margin-top:0">'+h.text+'</div>'
     +'<div class="arabic-meta" style="margin-top:14px"><span class="arabic-src">'+esc(h.reference)+' · Riwayat '+esc(h.narrator)+'</span></div>'
     +'</div>'
-    +'<div class="callout info" style="margin-top:10px">'+icon("info",18)+'<div><b>Perawi:</b> '+esc(h.narrator)+'<br><b>Derajat:</b> '+esc(h.grade)+'<br><b>Referensi:</b> '+esc(h.reference)+'</div></div>'
+    +'<div class="callout info" style="margin-top:10px">'+icon("info",18)+'<div><b>Hadis riwayat:</b> '+esc(h.title.replace("Hadis riwayat ",""))+'<br><b>Perawi:</b> '+esc(h.narrator)+'<br><b>Derajat:</b> '+esc(h.grade)+'<br><b>Referensi:</b> '+esc(h.reference)+'</div></div>'
     +'<div class="callout" style="margin-top:10px">'+icon("book",18)+'<div><b>Sumber APK</b><br>Detail hadis ini disalin dari data internal aplikasi AsmaSlides 1.9.2 yang diberikan untuk penyamaan Silmikaffah.</div></div>'
     +'</div>';
 }
@@ -6395,10 +6395,13 @@ const APK_DALIL_REF = {
     };
   });
   // APK 1.9.2 menampilkan hadis Jami' at-Tirmidhi 3507 pada Ar-Rahmaan.
+  // Perawi yang ditampilkan: Abu Hurairah. Item dibuat sebagai entri dalil
+  // tersendiri dan selalu dapat diketuk menuju detail hadis lokal APK.
   if(num===1){
     dalilItems.push({
       type:"hadith",
       title:"Hadis riwayat at-Tirmidhi",
+      narrator:"Abu Hurairah",
       number:3507,
       route:"#/hadith/tirmidzi/3507"
     });
@@ -6412,7 +6415,7 @@ const APK_DALIL_REF = {
     +'<div class="asma-panel"><div class="asma-panel-head"><div><div class="asma-panel-title">Arti</div><div class="asma-panel-arti">'+esc(arti)+'</div></div>'
     +'<button class="asma-dalil-btn" data-action="asma-dalil" data-target="asma-dalil-'+e.id+'">'+icon("info",20)+'<span>Lihat Dalil</span></button></div></div>'
     +'<div class="asma-block" id="asma-dalil-'+e.id+'" style="display:none"><div class="asma-block-title">Dalil</div>'
-    +(dalilItems.length ? dalilItems.map(x=>x.route ? '<div class="asma-dalil-item tappable" data-nav="'+esc(x.route)+'" role="link" tabindex="0"><strong>'+esc(x.title)+'</strong>'+(x.ayat?'<div class="muted" style="margin-top:3px">Ayat '+x.ayat+'</div>':'')+(x.number?'<div class="muted" style="margin-top:3px">Jami\' at-Tirmidzi no. '+x.number+'</div>':'')+'<span class="chev">'+icon("chev",16)+'</span></div>' : '<div class="asma-dalil-item tappable" data-action="asma-dalil-info" data-title="'+esc(x.title)+'" data-ref="'+esc(x.ref||x.title)+'" role="button" tabindex="0"><strong>'+esc(x.title)+'</strong><div class="muted" style="margin-top:3px">'+esc(x.ref||'Lihat referensi')+'</div><span class="chev">'+icon("chev",16)+'</span></div>').join('') : '<div class="muted">Dalil belum tersedia.</div>')
+    +(dalilItems.length ? dalilItems.map(x=>x.route ? '<div class="asma-dalil-item tappable" data-nav="'+esc(x.route)+'" role="link" tabindex="0"><strong>'+esc(x.title)+'</strong>'+(x.narrator?'<div class="muted" style="margin-top:3px">Riwayat '+esc(x.narrator)+'</div>':'')+(x.ayat?'<div class="muted" style="margin-top:3px">Ayat '+x.ayat+'</div>':'')+(x.number?'<div class="muted" style="margin-top:3px">Jami\' at-Tirmidzi no. '+x.number+'</div>':'')+'<span class="chev">'+icon("chev",16)+'</span></div>' : '<div class="asma-dalil-item tappable" data-action="asma-dalil-info" data-title="'+esc(x.title)+'" data-ref="'+esc(x.ref||x.title)+'" role="button" tabindex="0"><strong>'+esc(x.title)+'</strong><div class="muted" style="margin-top:3px">'+esc(x.ref||'Lihat referensi')+'</div><span class="chev">'+icon("chev",16)+'</span></div>').join('') : '')
     +'</div>'
     +'<div class="asma-block"><div class="asma-block-title">Keterangan</div><div>'+arabicize(esc(keterangan))+'</div></div>'
     +'<div class="asma-manfaat-row"><span class="asma-manfaat-title">Manfaat Membaca</span><label class="switch"><input type="checkbox" data-toggle-target="asma-manfaat-'+e.id+'"><i></i></label></div>'
