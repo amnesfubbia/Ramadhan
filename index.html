@@ -6,6 +6,10 @@
 <meta name="description" content="SILMIKAFFAH — Ensiklopedia & Pembelajaran Islam menyeluruh: Al-Qur'an, Hadis, Fiqih, Doa, Sejarah, Kalender Hijriah, dan banyak lagi.">
 <meta name="theme-color" content="#0F7A4D">
 <title>SILMIKAFFAH — Jelajahi Islam secara menyeluruh dalam satu ruang pengetahuan</title>
+<script>
+/* Terapkan tema tersimpan SEBELUM CSS/body dirender agar tidak flash putih saat membuka/refresh. */
+(function(){try{var v=localStorage.getItem("silk_settings");if(v){var s=JSON.parse(v);if(s&&s.theme==="dark")document.documentElement.dataset.theme="dark";}}catch(e){}})();
+</script>
 <style>
 /* ============================================================
    SILMIKAFFAH — Design System v2 (UI Koreksi)
@@ -73,10 +77,12 @@ html[data-theme="dark"]{
 
 /* ---------- Base ---------- */
 *{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
 html[data-font="a"]{--font-scale:.92}
 html[data-font="c"]{--font-scale:1.12}
 body{
+  opacity:0;
+  transition:opacity .08s ease;
   font-family:var(--font-ui);
   font-size:calc(14.5px * var(--font-scale));
   line-height:1.6;
@@ -768,6 +774,9 @@ footer.app-foot{text-align:center;color:var(--text-3);font-size:calc(10.5px * va
 .boot-line.w1{width:42%}.boot-line.w2{width:72%}.boot-line.w3{width:56%}
 .boot-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
 .boot-box{height:76px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border)}
+#today-carousel .carousel-viewport{overflow:hidden}
+#today-carousel .carousel-track{display:flex;width:100%;gap:0;overflow:visible;padding:0;scroll-snap-type:none;transition:transform .45s ease}
+#today-carousel .carousel-slide{flex:0 0 100%;min-width:100%;scroll-snap-align:none}
 </style>
 </head>
 <body>
@@ -5330,6 +5339,33 @@ API.getSurah = async function(n){
   }
 };
 
+/* ---------- Single Ayah resolver: lokal -> Al Quran Cloud -> Quran.com ---------- */
+API.getAyah = async function(key){
+  if(DBQ.AYAT[key]) return {ayah:DBQ.AYAT[key], source:"data lokal"};
+  const ck="q_ayah_"+String(key).replace(/:/g,"_");
+  const cached=cacheGetTtl(ck,30*24*3600*1000);
+  if(cached) return {ayah:cached, source:"cache lokal"};
+  const clean=String(key).match(/^(\d{1,3}):(\d{1,3})$/);
+  if(!clean) throw new Error("format ayat tidak valid");
+  const surah=+clean[1], ayahNo=+clean[2];
+  try{
+    const j=await API.fetchJSON("https://api.alquran.cloud/v1/ayah/"+surah+":"+ayahNo+"/editions/quran-uthmani,id.indonesian",10000);
+    const data=j&&j.data;
+    if(Array.isArray(data)&&data.length){
+      const ar=data.find(x=>x.edition&&x.edition.identifier==="quran-uthmani")||data[0];
+      const id=data.find(x=>x.edition&&x.edition.identifier==="id.indonesian")||data[1];
+      const out={s:surah,a:ayahNo,arab:ar&&ar.text||"",arti:id&&id.text||""};
+      if(out.arab){cacheSet(ck,out,30*24*3600*1000);return {ayah:out,source:"Al Quran Cloud API"};}
+    }
+  }catch(e){}
+  try{
+    const r=await API.getSurah(surah);
+    const v=(r.surah||[]).find(x=>+x.number===ayahNo);
+    if(v){const out={s:surah,a:ayahNo,arab:v.arab||"",arti:v.translation||""};cacheSet(ck,out,30*24*3600*1000);return {ayah:out,source:r.source||"Quran API"};}
+  }catch(e){}
+  throw new Error("Ayat "+key+" tidak dapat dimuat");
+};
+
 /* ============================================================
    C. HADIS — API hadith (gading.dev) + fallback lokal
    ============================================================ */
@@ -5515,6 +5551,8 @@ function homeView(){
 function qa(ic,label,route){
   return '<div class="qa-item" data-nav="'+route+'">'+icon(ic,22)+'<span>'+esc(label)+'</span></div>';
 }
+
+/* ---------- FIX: Carousel Hari Ini harus bergerak per SLIDE, bukan per lebar TRACK ---------- */
 
 /* ---------- Carousel "Hari Ini": auto-rotate, swipe, dots ---------- */
 let carIdx = 0;
@@ -5831,28 +5869,40 @@ function hadithDetailView(book, number){
   return h;
 }
 function quranAyahView(key){
-  const a = DBQ.AYAT[key];
-  if(!a) return errorView("Ayat tidak ditemukan.");
-  const s = DBQ.surah(a.s);
-  const aid = "ayat-"+key;
-  const saved = inCollection(aid);
-  const juz = juzOf(s[0], a.a);
-  return '<div class="page">'+crumbs([{label:"Home",href:"#/home"},{label:"Al-Qur'an",href:"#/quran"},{label:"Surah "+s[2],href:"#/surah/"+a.s},{label:"Ayat "+a.a}])
-    + '<div class="card">'
-    + '<div class="arabic-text" dir="rtl" lang="ar" style="font-size:calc(28px * var(--font-scale))">'+esc(a.arab)+'</div>'
-    + '<div class="arabic-translation" style="border:none;padding:0;margin-top:10px">'+esc(a.arti)+'</div>'
-    + '<div class="arabic-meta"><span class="arabic-src">QS. '+esc(s[2])+' '+a.s+':'+a.a+' · Juz '+juz+' · Sumber: Al-Qur\'an</span>'+audioUI("","","")+'</div>'
-    + '</div>'
-    + '<div class="detail-actions" style="margin-top:10px">'
-    + '<button class="btn btn-ghost" data-action="bookmark" data-id="'+aid+'">'+(saved?icon("bookmarkFill",16)+" Tersimpan":icon("bookmark",16)+" Simpan")+'</button>'
-    + '<button class="btn btn-ghost" data-action="share" data-id="'+aid+'" data-title="QS. '+esc(s[2])+' · Ayat '+a.a+'">'+icon("share",16)+' Bagikan</button>'
-    + '</div>'
-    + '<div class="callout info" style="margin-top:12px">'+icon("info",18)+'<div><b>Tafsir:</b> tafsir ayat ini belum tersedia — memerlukan sumber kitab tafsir berlisensi. Transliterasi menyusul.</div></div>'
-    + '<div class="chips" style="margin-top:12px"><span class="chip tag">#al-quran</span><span class="chip tag">#ayat</span><span class="chip tag">#juz-'+juz+'</span></div>'
-    + '<div class="section-title"><h2>Konten Terkait</h2></div>'
-    + '<div class="row" data-nav="#/surah/'+a.s+'"><span class="row-icon">'+icon("quran",18)+'</span><span class="grow"><span class="rt">Surah '+esc(s[2])+'</span><span class="rs">'+esc(s[3])+' · '+s[5]+' ayat</span></span><span class="chev">'+icon("chev",18)+'</span></div>'
-    + '</div>';
+  const local = DBQ.AYAT[key];
+  const m = String(key||"").match(/^(\d{1,3}):(\d{1,3})$/);
+  if(!m) return errorView("Format ayat tidak valid.");
+  const surahNo=+m[1], ayahNo=+m[2];
+  const s=DBQ.surah(surahNo);
+  const renderAyah=(a,source)=>{
+    const aid="ayat-"+key;
+    const saved=inCollection(aid);
+    return '<div class="page">'+crumbs([{label:"Home",href:"#/home"},{label:"Al-Qur\'an",href:"#/quran"},{label:"Surah "+s[2],href:"#/surah/"+surahNo},{label:"Ayat "+ayahNo}])
+      +'<div class="card">'
+      +'<div class="arabic-text" dir="rtl" lang="ar" style="font-size:calc(28px * var(--font-scale))">'+esc(a.arab||"")+'</div>'
+      +'<div class="arabic-translation" style="border:none;padding:0;margin-top:10px">'+esc(a.arti||"")+'</div>'
+      +'<div class="arabic-meta"><span class="arabic-src">QS. '+esc(s[2])+' '+surahNo+':'+ayahNo+' · Juz '+juzOf(surahNo,ayahNo)+' · Sumber: '+esc(source||"Al-Qur\'an")+'</span>'+audioUI("","","")+'</div>'
+      +'</div>'
+      +'<div class="detail-actions" style="margin-top:10px">'
+      +'<button class="btn btn-ghost" data-action="bookmark" data-id="'+aid+'">'+(saved?icon("bookmarkFill",16)+" Tersimpan":icon("bookmark",16)+" Simpan")+'</button>'
+      +'<button class="btn btn-ghost" data-action="share" data-id="'+aid+'" data-title="QS. '+esc(s[2])+' · Ayat '+ayahNo+'">'+icon("share",16)+' Bagikan</button>'
+      +'</div>'
+      +'<div class="callout info" style="margin-top:12px">'+icon("info",18)+'<div><b>Catatan:</b> teks ayat dan terjemahan ditampilkan dari data lokal atau sumber Al-Qur\'an yang tersedia. Tafsir per ayat belum ditambahkan.</div></div>'
+      +'<div class="chips" style="margin-top:12px"><span class="chip tag">#al-quran</span><span class="chip tag">#ayat</span><span class="chip tag">#juz-'+juzOf(surahNo,ayahNo)+'</span></div>'
+      +'<div class="section-title"><h2>Konten Terkait</h2></div>'
+      +'<div class="row" data-nav="#/surah/'+surahNo+'"><span class="row-icon">'+icon("quran",18)+'</span><span class="grow"><span class="rt">Surah '+esc(s[2])+'</span><span class="rs">'+esc(s[3])+' · '+s[5]+' ayat</span></span><span class="chev">'+icon("chev",18)+'</span></div>'
+      +'</div>';
+  };
+  if(local) return renderAyah(local,"data lokal");
+  const loading='<div class="page">'+crumbs([{label:"Home",href:"#/home"},{label:"Al-Qur\'an",href:"#/quran"},{label:"Surah "+s[2],href:"#/surah/"+surahNo},{label:"Ayat "+ayahNo}])+'<div class="card"><div class="skeleton" style="height:150px"></div><div class="skeleton" style="height:70px;margin-top:12px"></div><p class="muted small" style="margin-top:12px;text-align:center">Memuat QS. '+esc(s[2])+' '+surahNo+':'+ayahNo+'…</p></div></div>';
+  API.getAyah(key).then(res=>{
+    if(location.hash==="#/quran/ayat/"+key){const main=$("app-main");if(main){main.innerHTML=renderAyah(res.ayah,res.source);bindActions();}}
+  }).catch(()=>{
+    if(location.hash==="#/quran/ayat/"+key){const main=$("app-main");if(main){main.innerHTML='<div class="page">'+crumbs([{label:"Home",href:"#/home"},{label:"Al-Qur\'an",href:"#/quran"}])+'<div class="empty-state">'+icon("quran")+'<h4>Ayat belum dapat dimuat</h4><p>Koneksi ke sumber Al-Qur\'an sedang tidak tersedia. Silakan coba lagi.</p><button class="btn btn-primary" onclick="router()">Coba Lagi</button></div></div>';bindActions();}}
+  });
+  return loading;
 }
+
 function juzOf(surah, ayah){
   let juz = 1;
   DB.JUZ.forEach((j,idx)=>{
@@ -9867,6 +9917,7 @@ function normalizeEntry(e){
 }
 function init(){
   applyTheme(SETTINGS.theme);
+  document.body.style.opacity="1";
   document.documentElement.dataset.font = SETTINGS.font;
   DB.ENTRIES.forEach(normalizeEntry);
   buildSidebar();
