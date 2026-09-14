@@ -6244,11 +6244,12 @@ function asmaEntryView(e){
   // Dalil mengikuti data yang terverifikasi dari APK sumber.
   // Ar-Rahman (01): Al-Faatihah 1, Al-Faatihah 3, Yaa Siin 52, dan Hadis at-Tirmidhi.
   /*
-   * DALIL ASMAUL HUSNA 01-99
-   * 01 mempertahankan 4 rujukan yang terlihat pada APK sumber.
-   * 02-99 diisi dengan rujukan ayat/hadis per nama berdasarkan tabel rujukan
-   * eksternal yang dapat diverifikasi; jangan menyebutnya sebagai salinan
-   * database internal APK bila APK tidak menyediakan mapping tersebut.
+   * DALIL ASMAUL HUSNA 01-99 — EKSTRAK LANGSUNG DARI APK 1.9.2
+   * Mapping ditemukan pada static initializer class
+   * com.kaydeetech.android.asmaulhusna.dalil.a
+   * Format: nomor Asma (01-99) -> daftar surah:ayat.
+   * Indeks internal APK bersifat 0-based (00=Allah), sehingga diubah
+   * menjadi nomor tampilan 01-99 di Silmikaffah.
    */
 const APK_DALIL_REF = {
     "1":["1:1","1:3","36:52"],
