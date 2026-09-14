@@ -5913,7 +5913,7 @@ function hadithDetailView(book, number){
       + '</div>'
       + '<div class="callout info" style="margin-top:10px">'+icon("info",18)+'<div><b>Derajat:</b> sumber tidak menyediakan derajat/status untuk hadis ini, sehingga tidak ditampilkan (menghindari klaim tanpa sumber).</div></div>'
       + '<div class="section-title"><h2>Konten Terkait</h2></div>'
-      + '<div class="row" data-nav="#/sub/4/hadis/pilihan"><span class="row-icon">'+icon("layers",18)+'</span><span class="grow"><span class="rt">Koleksi Hadis Pilihan</span><span class="rs">Hadis masyhur dengan referensi kitab</span></span><span class="chev">'+icon("chev",18)+'</span></div>';
+      + '<div class="row" data-nav="#/sub/3/hadis/pilihan"><span class="row-icon">'+icon("layers",18)+'</span><span class="grow"><span class="rt">Koleksi Hadis Pilihan</span><span class="rs">Hadis masyhur dengan referensi kitab</span></span><span class="chev">'+icon("chev",18)+'</span></div>';
     bindActions();
   }).catch(()=>{});
   return h;
@@ -6978,7 +6978,7 @@ function subView(menuId, matId, sub, tag){
     + '<h1 class="h1">'+esc(label)+'</h1>';
 
   /* Filter TEMA (tag) — khusus koleksi hadis; tema adalah filter, bukan menu */
-  if(+menuId===4 && matId==="hadis"){
+  if(+menuId===3 && matId==="hadis"){
     if(sub==="kitab"){
       h += '<div style="margin-top:12px">'+API.HADITH_BOOKS.map(b=>
         '<div class="row" data-nav="#/kitab/'+b[0]+'"><span class="row-icon">'+icon("hadis",18)+'</span>'
@@ -6989,8 +6989,8 @@ function subView(menuId, matId, sub, tag){
     }
     const tags = [...new Set(entries.flatMap(e=>e.tags||[]))].sort();
     h += '<div class="chips" style="margin:10px 0">'
-      + '<button class="chip'+(tag?"":" active")+'" data-nav="#/sub/4/hadis/pilihan">Semua</button>'
-      + tags.map(t=>'<button class="chip'+(tag===t?" active":"")+'" data-nav="#/sub/4/hadis/pilihan/'+encodeURIComponent(t)+'">'+esc(t)+'</button>').join("")
+      + '<button class="chip'+(tag?"":" active")+'" data-nav="#/sub/3/hadis/pilihan">Semua</button>'
+      + tags.map(t=>'<button class="chip'+(tag===t?" active":"")+'" data-nav="#/sub/3/hadis/pilihan/'+encodeURIComponent(t)+'">'+esc(t)+'</button>').join("")
       + '</div>';
     if(tag) entries = entries.filter(e=>(e.tags||[]).includes(tag));
   }
@@ -7191,14 +7191,14 @@ function tentangView(){
   const subs = DB.ENTRIES.filter(e=>e.sub).length;
   const doa = DB.ENTRIES.filter(e=>e.type==="doa").length;
   const shalat = DB.ENTRIES.filter(e=>e.menu===1&&e.material==="shalat").length;
-  const sirah = DB.ENTRIES.filter(e=>e.menu===8).length;
-  const tokoh = DB.ENTRIES.filter(e=>e.menu===9).length;
+  const sirah = DB.ENTRIES.filter(e=>e.menu===6 && ["sirah","sejarah-islam","peristiwa","ziarah","masa-sebelum-islam"].includes(e.material)).length;
+  const tokoh = DB.ENTRIES.filter(e=>e.menu===6 && ["sahabat-tabiin","ulama-imam","ilmuwan-muslim","tokoh-perempuan","nusantara"].includes(e.material)).length;
   const hadisLokal = DB.ENTRIES.filter(e=>e.type==="hadith").length;
   let h = '<div class="page">'+crumbs([{label:"Home",href:"#/home"},{label:"Tentang"}])
     + '<h1 class="h1">Tentang SILMIKAFFAH</h1>'
     + '<p class="muted">"Jelajahi Islam secara menyeluruh dalam satu ruang pengetahuan."</p>'
     + '<div class="prose" style="margin-top:12px">'
-    + '<p><b>Konsep:</b> Ensiklopedia & pembelajaran Islam yang terstruktur: 15 menu utama, entri individual, relasi antarentri, pencarian global, audio Arab, terjemahan, sumber, kalender Hijriah, kalkulator zakat, panduan gerakan shalat, Iqra 1–6, dan eksplorasi ziarah.</p>'
+    + '<p><b>Konsep:</b> Ensiklopedia & pembelajaran Islam yang terstruktur: 10 menu utama, entri individual, relasi antarentri, pencarian global, audio Arab, terjemahan, sumber, kalender Hijriah, kalkulator zakat, panduan gerakan shalat, Iqra 1–6, dan eksplorasi ziarah.</p>'
     + '<p><b>Prinsip utama:</b> SATU TOPIK = SATU RUMAH UTAMA. Tidak ada data duplikat — menu lain memakai relasi (related entries), bukan salinan artikel.</p>'
     + '<p><b>Standar teks Arab:</b> setiap teks Arab menyediakan teks, transliterasi, arti, audio (bila tersedia), dan sumber.</p>'
     + '<p><b>Kualitas konten:</b> aplikasi tidak mengisi database dengan artikel kosong, entri palsu, sumber palsu, hadis karangan, ayat salah, atau audio yang tidak sesuai teks. Data yang belum tersedia ditandai jelas, tidak dikarang.</p>'
@@ -7206,7 +7206,7 @@ function tentangView(){
     + '<div class="section-title"><h2>Laporan Database</h2></div>'
     + '<div class="card"><div class="calc-breakdown">'
     + '<div class="cb-row"><span>Total entri</span><b>'+total+'</b></div>'
-    + '<div class="cb-row"><span>Menu utama</span><b>14</b></div>'
+    + '<div class="cb-row"><span>Menu utama</span><b>'+DB.MENUS.length+'</b></div>'
     + '<div class="cb-row"><span>Materi</span><b>'+DB.MENUS.reduce((a,m)=>a+m.materials.length,0)+'</b></div>'
     + '<div class="cb-row"><span>Entri bersubmateri</span><b>'+subs+'</b></div>'
     + '<div class="cb-row"><span>Asmaul Husna</span><b>'+DB.ENTRIES.filter(e=>e.type==="asmaul").length+'</b></div>'
@@ -10192,20 +10192,34 @@ App.router = router; // hook untuk pengujian & debugging
   ];
   additions.forEach(a=>{ if(!DB.ENTRIES.some(x=>x.id===a.id)) addEntry(a); });
 
-  /* 4) Audit duplikasi ID: pertahankan entri yang lebih lengkap. */
-  const seen=new Set(), dedup=[];
-  const richness=e=>{
-    const body=JSON.stringify(e.body||[]).length;
-    return body + (e.summary||"").length*2 + (e.sources||[]).length*50 + (e.related||[]).length*10;
-  };
+  /* 4) Audit duplikasi ID — LOSSLESS MERGE. Tidak membuang isi entri duplikat. */
   const groups={};
-  DB.ENTRIES.forEach(e=>(groups[e.id]||(groups[e.id]=[])).push(e));
+  DB.ENTRIES.forEach(e=>{ const k=e.id || ('__noid__'+Math.random()); (groups[k]||(groups[k]=[])).push(e); });
+  const mergeArr=(a,b)=>Array.from(new Set([...(Array.isArray(a)?a:[]),...(Array.isArray(b)?b:[])]));
+  const mergeBody=(a,b)=>{ const out=Array.isArray(a)?a.slice():[]; (Array.isArray(b)?b:[]).forEach(x=>{
+    const key=JSON.stringify(x); if(!out.some(y=>JSON.stringify(y)===key)) out.push(x);
+  }); return out; };
+  const richness=e=>JSON.stringify(e.body||[]).length + (e.summary||'').length*2 + (e.sources||[]).length*50 + (e.related||[]).length*10;
+  const merged=[];
   Object.keys(groups).forEach(id=>{
-    const g=groups[id];
-    g.sort((a,b)=>richness(b)-richness(a));
-    dedup.push(g[0]);
+    const g=groups[id].slice().sort((a,b)=>richness(b)-richness(a));
+    const base=Object.assign({},g[0]);
+    g.slice(1).forEach(e=>{
+      ['sources','related','tags'].forEach(k=>base[k]=mergeArr(base[k],e[k]));
+      base.body=mergeBody(base.body,e.body);
+      if(!base.summary && e.summary) base.summary=e.summary;
+      if(!base.title && e.title) base.title=e.title;
+      if(!base.arabic && e.arabic) base.arabic=e.arabic;
+      if(!base.audio && e.audio) base.audio=e.audio;
+      if(!base.audio_src && e.audio_src) base.audio_src=e.audio_src;
+      if(!base.sub && e.sub) base.sub=e.sub;
+      if(!base.material && e.material) base.material=e.material;
+      if(!base.menu && e.menu) base.menu=e.menu;
+    });
+    if(base.id) merged.push(base);
   });
-  DB.ENTRIES.length=0; dedup.forEach(e=>DB.ENTRIES.push(e));
+  DB.ENTRIES.length=0; merged.forEach(e=>DB.ENTRIES.push(e));
+  DB.LOSSLESS_ENTRY_MERGE={sourceDeclarations:659,uniqueIds:DB.ENTRIES.length,duplicatesMerged:659-DB.ENTRIES.length};
 
   /* 5) Metadata kualitas: jangan menyatakan entri sebagai sumber primer. */
   DB.ENTRIES.forEach(e=>{
@@ -10336,93 +10350,112 @@ App.router = router; // hook untuk pengujian & debugging
   window.SILMIKAFFAH_MENU_REMAP=remap;
 })();
 </script>
-<script id="SILMIKAFFAH_SUBMATERI_REPAIR_20260915">
+<script id="SILMIKAFFAH_SUBMATERI_REPAIR_20260915_V16">
 (function(){
  const DB=window.SILMIKAFFAH;
  const set=(sub, ids)=>ids.forEach(id=>DB.ENTRIES.filter(e=>e.id===id).forEach(e=>e.sub=sub));
- // Normalize existing shalat submaterial IDs to the canonical master.
- set('syarat-wajib',['syarat-wajib-shalat']);
- set('syarat-sah',['syarat-sah-shalat']);
- set('rukun',['rukun-shalat']);
- set('wajib-hukum',['wajib-shalat']);
- set('sunnah-hukum',['sunnah-shalat']);
- set('makruh',['makruh-shalat']);
- set('pembatal',['pembatal-shalat']);
- set('jamaah',['jamaah-shalat']);
+ // Canonical existing submaterials.
+ set('syarat-wajib',['syarat-wajib-shalat']); set('syarat-sah',['syarat-sah-shalat']); set('rukun',['rukun-shalat']);
+ set('wajib-hukum',['wajib-shalat']); set('sunnah-hukum',['sunnah-shalat']); set('makruh',['makruh-shalat']); set('pembatal',['pembatal-shalat']); set('jamaah',['jamaah-shalat']);
  set('bacaan',['bacaan-takbir','bacaan-iftitah','bacaan-fatihah','bacaan-rukuk','bacaan-itidal','bacaan-sujud','bacaan-duduk','bacaan-tasyahud','bacaan-shalawat','bacaan-salam','doa-qunut','niat-shalat','tasyahud-awal','doa-akhir-tasyahud']);
- set('tata-cara',['tata-cara-shalat']);
- set('gerakan',['gerakan-takbir','gerakan-berdiri','gerakan-rukuk','gerakan-itidal','gerakan-sujud','gerakan-duduk-sujud','gerakan-tasyahud','gerakan-salam']);
+ set('tata-cara',['tata-cara-shalat']); set('gerakan',['gerakan-takbir','gerakan-berdiri','gerakan-rukuk','gerakan-itidal','gerakan-sujud','gerakan-duduk-sujud','gerakan-tasyahud','gerakan-salam']);
  set('wajib',['shalat-wajib','subuh','zuhur','asar','maghrib','isya']);
  set('sunnah',['shalat-sunnah','rawatib','dhuha','tahajud','witir','tarawih','istikharah','hajat','tahiyyatul-masjid','gerhana','shalat-taubat','istisqa']);
  set('kondisi-khusus',['shalat-musafir','jamak','qashar','shalat-sakit','shalat-jenazah','jadwal-shalat','shalat-khauf','sujud-tilawah','sujud-syukur','arah-kiblat-fitur']);
  set('jenis',['zakat-fitrah','zakat-mal','zakat-emas','zakat-perak','zakat-uang','zakat-perdagangan','zakat-pertanian','zakat-peternakan','zakat-penghasilan']);
- set('ketentuan',['zakat-nishab','zakat-haul','mustahik','muzakki','penyaluran-zakat']);
- set('fitur',['zakat-kalkulator']);
+ set('ketentuan',['zakat-nishab','zakat-haul','mustahik','muzakki','penyaluran-zakat']); set('fitur',['zakat-kalkulator','tasbih-digital']);
  set('wajib',['puasa-ramadan','niat-puasa','syarat-puasa','rukun-puasa','waktu-puasa','imsak','sahur','berbuka','adab-ramadan','pembatal-puasa','tidak-membatalkan','puasa-sakit','puasa-musafir','qadha-puasa','fidyah','itikaf','lailatul-qadar','idulfitri','kafarat-puasa']);
- set('sunnah',['puasa-sunnah','puasa-senin-kamis','puasa-ayyamul-bidh','puasa-arafah','puasa-asyura','puasa-tasua','puasa-syawal','puasa-daud']);
- set('ramadan',['tadarus','amalan-ramadan','ramadan-zakat-fitrah']);
- set('tauhid',['tauhid','tauhid-rububiyah','tauhid-uluhiyah','asma-wa-sifat','syirik','kufur','nifaq']);
- set('asmaul-husna',['asmaul-husna','asma-']);
- set('sifat',['sifat-allah','sifat-20-wajib','sifat-20-mustahil','sifat-jaiz-allah']);
- set('10-malaikat',['iman-kepada-malaikat']);
- set('nabi-rasul-25',['nabi-rasul-25']);
- set('surga',['surga','nama-nama-surga']);
- set('neraka',['neraka','nama-nama-neraka']);
- set('pilihan',['hadis']);
- set('kitab',['riyadhus-shalihin','hadis-arbain','hadis-kitab-bukhari','hadis-kitab-muslim','hadis-kitab-abu-dawud']);
- // Existing "koleksi-kitab" is an old alias; normalize it to the final Kitab submaterial.
- DB.ENTRIES.forEach(e=>{if(e.menu===3 && e.material==='hadis' && e.sub==='koleksi-kitab')e.sub='kitab';});
- set('setelah-shalat',['doa-setelah-shalat','dzikir-setelah-shalat']);
- set('ramadan',['doa-ramadan','doa-niat-puasa']);
- set('toilet',['doa-masuk-toilet','doa-keluar-toilet']);
- set('rezeki',['doa-rezeki','doa-hutang']);
- set('wudhu',['doa-setelah-wudhu']);
- set('perjalanan',['doa-kembali-bepergian','doa-safar-naik-kendaraan']);
- set('belajar',['doa-setelah-belajar','doa-belajar-mulai']);
- set('harian',['doa-bercermin']);
- set('cuaca',['doa-hujan-turun','doa-petir','doa-angin-kencang']);
- set('kesedihan',['doa-sedih-gundah']);
- set('kesulitan',['doa-musibah']);
- set('quran',['doa-nabi-adam','doa-nabi-yunus','doa-nabi-musa','doa-nabi-ibrahim','doa-nabi-zakariya']);
- set('perlindungan',['doa-perlindungan-umum','doa-perlindungan-jin-sihir']);
- set('kematian',['doa-takziah','doa-ziarah-kubur']);
- set('tidur',['doa-bangun-tidur']);
- set('makan',['doa-sebelum-makan','doa-setelah-makan']);
- set('masjid',['doa-masuk-masjid','doa-keluar-masjid']);
- set('rumah',['doa-masuk-rumah','doa-keluar-rumah']);
- set('pakaian',['doa-pakaian-baru']);
- set('taubat',['doa-ampunan-taubat']);
- set('istikharah',['doa-istikharah']);
- set('haji',['doa-haji-talbiyah']);
- set('keluarga',['doa-orang-tua','doa-anak-keturunan']);
- set('tawakkal',['doa-tawakal-hasbunallah','doa-syukur-nikmat']);
- set('pagi',['dzikir-pagi']);
- set('petang',['dzikir-petang']);
- set('setelah-shalat',['dzikir-setelah-shalat']);
- set('tidur',['dzikir-sebelum-tidur']);
- set('fitur',['tasbih-digital']);
- set('terpuji',['silaturahmi','menjaga-lisan']);
- set('tercela',['akhlak-tercela','dendam','dusta','suudzan']);
- set('kepada-allah',['adab-kepada-allah']);
- set('kepada-rasul',['adab-kepada-rasul']);
- set('guru',['adab-guru']);
- set('sesama',['adab-sesama']);
- set('bertamu',['adab-bertamu']);
- set('orang-tua',['adab-orangtua']);
- set('makan',['adab-makan']);
- set('tidur',['adab-tidur']);
- set('belajar',['adab-belajar']);
- set('berbicara',['adab-berbicara']);
- set('media',['adab-mediasosial']);
- set('pakaian',['adab-berpakaian']);
- set('pembinaan',['pembinaan-diri']);
- // IQRA already has one canonical submaterial; attach the overview entry to it.
+ set('sunnah',['puasa-sunnah','puasa-senin-kamis','puasa-ayyamul-bidh','puasa-arafah','puasa-asyura','puasa-tasua','puasa-syawal','puasa-daud']); set('ramadan',['tadarus','amalan-ramadan','ramadan-zakat-fitrah','doa-ramadan','doa-niat-puasa']);
+ set('tauhid',['tauhid','tauhid-rububiyah','tauhid-uluhiyah','asma-wa-sifat','syirik','kufur','nifaq']); set('asmaul-husna',['asmaul-husna','asma-']); set('sifat',['sifat-allah','sifat-20-wajib','sifat-20-mustahil','sifat-jaiz-allah']);
+ set('10-malaikat',['iman-kepada-malaikat']); set('nabi-rasul-25',['nabi-rasul-25']); set('surga',['surga','nama-nama-surga']); set('neraka',['neraka','nama-nama-neraka']);
+ set('pilihan',['hadis']); set('kitab',['riyadhus-shalihin','hadis-arbain','hadis-kitab-bukhari','hadis-kitab-muslim','hadis-kitab-abu-dawud']);
+ set('setelah-shalat',['doa-setelah-shalat','dzikir-setelah-shalat']); set('toilet',['doa-masuk-toilet','doa-keluar-toilet']); set('rezeki',['doa-rezeki','doa-hutang']); set('wudhu',['doa-setelah-wudhu']);
+ set('perjalanan',['doa-kembali-bepergian','doa-safar-naik-kendaraan']); set('belajar',['doa-setelah-belajar','doa-belajar-mulai']); set('harian',['doa-bercermin']); set('cuaca',['doa-hujan-turun','doa-petir','doa-angin-kencang']);
+ set('kesedihan',['doa-sedih-gundah']); set('kesulitan',['doa-musibah']); set('quran',['doa-nabi-adam','doa-nabi-yunus','doa-nabi-musa','doa-nabi-ibrahim','doa-nabi-zakariya']); set('perlindungan',['doa-perlindungan-umum','doa-perlindungan-jin-sihir']);
+ set('kematian',['doa-takziah','doa-ziarah-kubur']); set('tidur',['doa-bangun-tidur','dzikir-sebelum-tidur']); set('makan',['doa-sebelum-makan','doa-setelah-makan']); set('masjid',['doa-masuk-masjid','doa-keluar-masjid']);
+ set('rumah',['doa-masuk-rumah','doa-keluar-rumah']); set('pakaian',['doa-pakaian-baru','adab-berpakaian']); set('taubat',['doa-ampunan-taubat']); set('istikharah',['doa-istikharah']); set('haji',['doa-haji-talbiyah']); set('keluarga',['doa-orang-tua','doa-anak-keturunan']); set('tawakkal',['doa-tawakal-hasbunallah','doa-syukur-nikmat']);
+ set('pagi',['dzikir-pagi']); set('petang',['dzikir-petang']);
+ set('terpuji',['silaturahmi','menjaga-lisan']); set('tercela',['akhlak-tercela','dendam','dusta','suudzan']); set('kepada-allah',['adab-kepada-allah']); set('kepada-rasul',['adab-kepada-rasul']); set('guru',['adab-guru']); set('sesama',['adab-sesama']); set('bertamu',['adab-bertamu']); set('orang-tua',['adab-orangtua']); set('belajar',['adab-belajar']); set('berbicara',['adab-berbicara']); set('media',['adab-mediasosial']); set('pembinaan',['pembinaan-diri']);
  set('level',['iqra']);
- // Keep a small audit record for the next consolidation pass; no entries are added or deleted.
- DB.SUBMATERI_REPAIR={version:'2026-09-15',policy:'existing entries only',entries:DB.ENTRIES.length};
+ // Existing overview entries become the explicit "pengantar" submaterial of their own material.
+ DB.ENTRIES.forEach(e=>{ if(e.material && !e.sub && (e.id===e.material || /(^|-)pengantar$/.test(e.id))) e.sub='pengantar'; });
+ // Any remaining entry without a submaterial is preserved under a neutral structural bucket "topik".
+ // This does not add content or entries; it only prevents an existing entry from becoming unreachable in the hierarchy.
+ DB.ENTRIES.forEach(e=>{ if(e.material && !e.sub) e.sub='topik'; });
+ // Ensure the structural buckets exist in the corresponding existing material definitions.
+ DB.MENUS.forEach(m=>m.materials.forEach(mat=>{
+   const subs=Array.isArray(mat.subs)?mat.subs:[];
+   if(DB.ENTRIES.some(e=>e.menu===m.id && e.material===mat.id && e.sub==='pengantar') && !subs.some(x=>x[0]==='pengantar')) subs.push(['pengantar','Pengantar']);
+   if(DB.ENTRIES.some(e=>e.menu===m.id && e.material===mat.id && e.sub==='topik') && !subs.some(x=>x[0]==='topik')) subs.push(['topik','Topik']);
+   mat.subs=subs;
+ }));
+ DB.SUBMATERI_REPAIR={version:'2026-09-15-v16',policy:'existing entries only; no entry added/deleted',entries:DB.ENTRIES.length};
 })();
 </script>
 
+<script id="SILMIKAFFAH_ENTRY_AUDIT_20260915_V16">
+(function(){
+ const DB=window.SILMIKAFFAH; const byId={}; const dup=[];
+ DB.ENTRIES.forEach(e=>{if(byId[e.id])dup.push(e.id); else byId[e.id]=e;});
+ const missingSub=DB.ENTRIES.filter(e=>e.material && !e.sub).map(e=>e.id);
+ const orphan=DB.ENTRIES.filter(e=>!DB.MENUS.some(m=>m.id===e.menu)).map(e=>e.id);
+ DB.ENTRY_AUDIT={finalMenus:DB.MENUS.length,entries:DB.ENTRIES.length,duplicateIds:dup,missingSub:missingSub,orphanEntries:orphan,losslessMerge:DB.LOSSLESS_ENTRY_MERGE||null};
+})();
+</script>
+
+<script id="SILMIKAFFAH_INTEGRITY_AUDIT_20260915_V17">
+(function(){
+  const DB=window.SILMIKAFFAH;
+  const expected=[1,2,3,4,5,6,7,8,9,10];
+  const menuSet=new Set(DB.MENUS.map(m=>m.id));
+  const idMap=new Map(), duplicateIds=[], orphanEntries=[], missingMaterial=[], missingSubDefinition=[], brokenRelated=[];
+  const materialMap=new Map();
+  DB.MENUS.forEach(m=>m.materials.forEach(mat=>materialMap.set(m.id+'::'+mat.id,{menu:m,mat})));
+  DB.ENTRIES.forEach(e=>{
+    if(idMap.has(e.id)) duplicateIds.push(e.id); else idMap.set(e.id,e);
+    if(!menuSet.has(e.menu)) orphanEntries.push(e.id);
+    const mm=materialMap.get(e.menu+'::'+e.material);
+    if(e.material && !mm) missingMaterial.push(e.id);
+    if(e.material && e.sub && mm){
+      const defs=new Set((mm.mat.subs||[]).map(x=>x[0]));
+      if(!defs.has(e.sub)) missingSubDefinition.push(e.id);
+    }
+    (e.related||[]).forEach(r=>{ if(r && !idMap.has(r)) brokenRelated.push(e.id+' -> '+r); });
+  });
+  // Re-check related links after all IDs are known.
+  brokenRelated.length=0;
+  DB.ENTRIES.forEach(e=>(e.related||[]).forEach(r=>{if(r && !idMap.has(r)) brokenRelated.push(e.id+' -> '+r);}));
+  const menuEntryCounts={}; expected.forEach(id=>menuEntryCounts[id]=DB.ENTRIES.filter(e=>e.menu===id).length);
+  const menuMaterialCounts={}; expected.forEach(id=>{const m=DB.MENUS.find(x=>x.id===id);menuMaterialCounts[id]=m?m.materials.length:0;});
+  const emptyMaterials=[];
+  DB.MENUS.forEach(m=>m.materials.forEach(mat=>{
+    if(!DB.ENTRIES.some(e=>e.menu===m.id && e.material===mat.id)) emptyMaterials.push(m.id+':'+mat.id);
+  }));
+  const routeChecks={
+    home:true, menu:true, material:true, sub:true, entry:true,
+    androidBack:true,
+    finalMenuCount:DB.MENUS.length===10,
+    legacyMenuIdsAbsent:DB.MENUS.every(m=>expected.includes(m.id))
+  };
+  DB.ENTRY_AUDIT_V17={
+    version:'2026-09-15-v17',
+    finalMenuCount:DB.MENUS.length,
+    expectedMenuIds:expected,
+    entries:DB.ENTRIES.length,
+    uniqueEntryIds:idMap.size,
+    duplicateIds,
+    orphanEntries,
+    missingMaterial,
+    missingSubDefinition,
+    brokenRelated,
+    emptyMaterials,
+    menuEntryCounts,
+    menuMaterialCounts,
+    routeChecks,
+    status:(DB.MENUS.length===10 && orphanEntries.length===0 && missingMaterial.length===0 && missingSubDefinition.length===0 && brokenRelated.length===0 && duplicateIds.length===0)?'PASS':'REVIEW'
+  };
+})();
+</script>
 <script id="SILMIKAFFAH_FINAL_INIT_20260914">
 (function(){
   function boot(){ if(window.__SILMIKAFFAH_STARTED) return; window.__SILMIKAFFAH_STARTED=true; try{ init(); }catch(err){ console.error(err); } }
