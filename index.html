@@ -496,6 +496,13 @@ html[data-theme="dark"] .prayer-item.next{color:#062B1A}
 .callout.warn{background:var(--warn-bg);color:var(--warn)}
 .callout.info{background:var(--info-bg);color:var(--info)}
 
+
+/* ---------- SOURCE VISIBILITY POLICY ----------
+   Sumber tetap disimpan di database untuk integritas data, tetapi tidak
+   ditampilkan pada keterangan/antarmuka pengguna. Detail materi tetap bersih.
+*/
+.source-list,.asma-source-label,.arabic-src,.source-item,.source-ui-hidden,.source-list + * { display:none !important; }
+
 /* ---------- Sources ---------- */
 .source-list{margin-top:6px}
 .source-item{
@@ -819,13 +826,13 @@ footer.app-foot{text-align:center;color:var(--text-3);font-size:calc(10.5px * va
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
     <span>Home</span>
   </button>
-  <button class="bn-item" data-nav="#/jelajah" data-bn="jelajah" aria-label="Jelajah">
+  <button class="bn-item" data-nav="#/menu/2" data-bn="rukun-iman" aria-label="Rukun Iman">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-    <span>Jelajah</span>
+    <span>Rukun Iman</span>
   </button>
-  <button class="bn-item" data-nav="#/search" data-bn="search" aria-label="Pencarian global">
+  <button class="bn-item" data-nav="#/menu/1" data-bn="rukun-islam" aria-label="Rukun Islam">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <span>Search</span>
+    <span>Rukun Islam</span>
   </button>
   <button class="bn-item" data-nav="#/koleksi" data-bn="koleksi" aria-label="Koleksi">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 20.5l-1.6-1.4C5.4 14.6 2 11.7 2 8 2 5 4.2 3 7 3c1.9 0 3.7 1 4.6 2.6h.8C13.3 4 15.1 3 17 3c2.8 0 5 2 5 5 0 3.7-3.4 6.6-8.4 11.1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
@@ -833,7 +840,7 @@ footer.app-foot{text-align:center;color:var(--text-3);font-size:calc(10.5px * va
   </button>
   <button class="bn-item" data-nav="#/settings" data-bn="settings" aria-label="Pengaturan">
     <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <span>Atur</span>
+    <span>Pengaturan</span>
   </button>
 </nav>
 
@@ -5475,7 +5482,7 @@ function homeView(){
     + '<div class="daily-title">QS. '+esc(sur[1])+' · Ayat '+ayat.a+'</div>'
     + '<div class="car-article"><div class="arabic-text" dir="rtl" lang="ar">'+esc(ayat.arab)+'</div>'
     + '<div class="car-arti muted small" style="margin-top:6px">'+esc(ayat.arti)+'</div></div>'
-    + '<div class="car-foot tiny muted">Sumber: Al-Qur\'an · '+audioUI("","","")+'</div>'
+    + '<div class="car-foot tiny muted source-ui-hidden">Sumber: Al-Qur\'an · '+audioUI("","","")+'</div>'
     + '</div></div>';
 
   /* Slide 2 — Hadis Hari Ini */
@@ -5693,7 +5700,7 @@ function surahView(n){
     window._surahQueue[n] = ayahs.map(a=>API.ayahAudioUrls(n, a.number));
     window._surahKeys[n] = ayahs.map(a=>a.key || (n+":"+a.number));
     box.innerHTML = '<div class="section-title"><h2>Ayat ('+ayahs.length+')</h2></div>'
-      + '<p class="tiny muted" style="margin-bottom:8px">Sumber: '+esc(res.source)+' · tombol speaker memutar ayat; speaker di nama surah memutar seluruh surah berurutan</p>'
+      + '<p class="tiny muted source-ui-hidden" style="margin-bottom:8px">Sumber: '+esc(res.source)+' · tombol speaker memutar ayat; speaker di nama surah memutar seluruh surah berurutan</p>'
       + '<div id="ayat-list"></div>'
       + (ayahs.length>chunk?'<button class="btn btn-ghost btn-block" id="ayat-more" style="margin-top:10px">Muat lebih banyak (sisa '+(ayahs.length-chunk)+')</button>':"");
     const list = document.getElementById("ayat-list");
@@ -5725,7 +5732,7 @@ function ayatCard(s, a){
     + '</div>'
     + '<div class="arabic-text" dir="rtl" lang="ar">'+esc(a.arab)+'</div>'
     + '<div class="arabic-translation" style="border:none;padding:0;margin-top:8px">'+esc(a.translation||"Terjemahan belum termuat — periksa koneksi.")+'</div>'
-    + '<div class="arabic-meta"><span class="arabic-src">'+s[0]+':'+a.number+(a.juz?' · Juz '+a.juz:"")+'</span>'
+    + '<div class="arabic-meta"><span class="arabic-src source-ui-hidden">'+s[0]+':'+a.number+(a.juz?' · Juz '+a.juz:"")+'</span>'
     + '<button class="btn btn-ghost" data-action="bookmark" data-id="'+aid+'" style="margin-left:auto;padding:5px 10px;font-size:11.5px">'+(saved?icon("bookmarkFill",14)+" Tersimpan":icon("bookmark",14)+" Simpan")+'</button>'
     + '</div></div>';
 }
@@ -5815,7 +5822,7 @@ function kitabView(book){
       box.innerHTML = '<div class="empty-state">'+icon("hadis")+'<h4>Hadis belum termuat</h4><p>API hadis tidak terjangkau saat ini. Hadis pilihan lokal tersedia di Koleksi Hadis (tema).</p></div>';
       return;
     }
-    box.innerHTML = '<p class="tiny muted" style="margin-bottom:8px">Sumber: '+esc(res.source)+' · '+esc(meta[1])+'</p><div id="h-items"></div>'
+    box.innerHTML = '<p class="tiny muted source-ui-hidden" style="margin-bottom:8px">Sumber: '+esc(res.source)+' · '+esc(meta[1])+'</p><div id="h-items"></div>'
       + '<button class="btn btn-ghost btn-block" id="h-more" style="margin-top:10px">Muat lebih banyak</button>';
     const listEl = document.getElementById("h-items");
     let fromIdx = per;
@@ -5874,7 +5881,7 @@ function apkHadith3507View(){
     +'<div class="arabic-meta" style="margin-top:14px"><span class="arabic-src">'+esc(h.reference)+' · Riwayat '+esc(h.narrator)+'</span></div>'
     +'</div>'
     +'<div class="callout info" style="margin-top:10px">'+icon("info",18)+'<div><b>Hadis riwayat:</b> '+esc(h.title.replace("Hadis riwayat ",""))+'<br><b>Perawi:</b> '+esc(h.narrator)+'<br><b>Derajat:</b> '+esc(h.grade)+'<br><b>Referensi:</b> '+esc(h.reference)+'</div></div>'
-    +'<div class="callout" style="margin-top:10px">'+icon("book",18)+'<div><b>Sumber</b><br>'+esc(h.source)+'</div></div>'
+    +'<div class="callout source-ui-hidden" style="margin-top:10px">'+icon("book",18)+'<div><b>Sumber</b><br>'+esc(h.source)+'</div></div>'
     +'</div>';
 }
 
@@ -5902,7 +5909,7 @@ function hadithDetailView(book, number){
     box.innerHTML = '<div class="card">'
       + (hd.arab?'<div class="arabic-text" dir="rtl" lang="ar">'+esc(hd.arab)+'</div>':"")
       + (hd.id?'<div class="arabic-translation" style="border:none;padding:0;margin-top:10px">'+esc(hd.id)+'</div>':"")
-      + '<div class="arabic-meta"><span class="arabic-src">'+esc(meta[1])+' · Hadis no. '+hd.number+(hd.narrator?' · '+esc(hd.narrator):"")+'</span>'+audioUI("","","")+'</div>'
+      + '<div class="arabic-meta"><span class="arabic-src source-ui-hidden">'+esc(meta[1])+' · Hadis no. '+hd.number+(hd.narrator?' · '+esc(hd.narrator):"")+'</span>'+audioUI("","","")+'</div>'
       + '</div>'
       + '<div class="callout info" style="margin-top:10px">'+icon("info",18)+'<div><b>Derajat:</b> sumber tidak menyediakan derajat/status untuk hadis ini, sehingga tidak ditampilkan (menghindari klaim tanpa sumber).</div></div>'
       + '<div class="section-title"><h2>Konten Terkait</h2></div>'
@@ -5925,7 +5932,7 @@ function quranAyahView(key){
       +'<div class="card">'
       +'<div class="arabic-text" dir="rtl" lang="ar" style="font-size:calc(28px * var(--font-scale))">'+esc(a.arab||"")+'</div>'
       +'<div class="arabic-translation" style="border:none;padding:0;margin-top:10px">'+esc(a.arti||"")+'</div>'
-      +'<div class="arabic-meta"><span class="arabic-src">QS. '+esc(s[2])+' '+surahNo+':'+ayahNo+' · Juz '+juzOf(surahNo,ayahNo)+' · Sumber: '+esc(source||"Al-Qur\'an")+'</span>'+audioUI("","","")+'</div>'
+      +'<div class="arabic-meta"><span class="arabic-src source-ui-hidden">QS. '+esc(s[2])+' '+surahNo+':'+ayahNo+' · Juz '+juzOf(surahNo,ayahNo)+' · Sumber: '+esc(source||"Al-Qur\'an")+'</span>'+audioUI("","","")+'</div>'
       +'</div>'
       +'<div class="detail-actions" style="margin-top:10px">'
       +'<button class="btn btn-ghost" data-action="bookmark" data-id="'+aid+'">'+(saved?icon("bookmarkFill",16)+" Tersimpan":icon("bookmark",16)+" Simpan")+'</button>'
@@ -6023,7 +6030,7 @@ function eventView(id){
     + '</div>'
     + '<div class="prose"><p>'+esc(ev.desc)+'</p></div>';
   if(ev.sources && ev.sources.length){
-    h += '<div class="section-title"><h2>Sumber</h2></div><div class="source-list">'+ev.sources.map(k=>{const s=DB.SOURCES[k]; return s?'<div class="source-item"><span class="si-type">'+esc(s.type)+'</span><span><b>'+esc(s.title)+'</b></span></div>':"";}).join("")+'</div>';
+    h += '<div class="section-title source-ui-hidden"><h2>Sumber</h2></div><div class="source-list source-ui-hidden">'+ev.sources.map(k=>{const s=DB.SOURCES[k]; return s?'<div class="source-item"><span class="si-type">'+esc(s.type)+'</span><span><b>'+esc(s.title)+'</b></span></div>':"";}).join("")+'</div>';
   }
   if(rel.length){
     h += '<div class="section-title"><h2>Konten Terkait</h2></div>'+rel.map(l=>'<div class="row" data-nav="'+l.href+'"><span class="row-icon">'+icon("layers",18)+'</span><span class="grow"><span class="rt">'+esc(l.label)+'</span></span><span class="chev">'+icon("chev",18)+'</span></div>').join("");
@@ -6177,7 +6184,7 @@ function zakatResultView(type, inp){
   h += '<div class="card calc-breakdown" style="margin-top:10px">';
   r.rows.forEach(row=> h += '<div class="cb-row"><span>'+esc(row[0])+'</span><b>'+esc(row[1])+'</b></div>');
   h += '<div class="cb-row"><span>Metode</span><b style="font-weight:600;text-align:right">'+esc(r.method)+'</b></div>';
-  h += '<div class="cb-row"><span>Sumber</span><b style="font-weight:600;text-align:right">'+esc(r.source)+'</b></div>';
+  h += '<div class="cb-row source-ui-hidden"><span>Sumber</span><b style="font-weight:600;text-align:right">'+esc(r.source)+'</b></div>';
   h += '</div>';
   r.notes.forEach(n=> h += '<div class="callout info" style="margin-top:8px">'+icon("info",18)+'<div>'+esc(n)+'</div></div>');
   h += '<p class="tiny muted" style="margin-top:8px">Estimasi — konfirmasikan dengan amil/lembaga zakat sebelum menunaikan.</p>';
@@ -6747,7 +6754,7 @@ function relatedBlock(e){
 function sourcesBlock(e){
   const srcs = (e.sources||[]).map(k=>DB.SOURCES[k]).filter(Boolean);
   if(!srcs.length) return "";
-  return '<div class="section-title"><h2>Sumber</h2></div><div class="source-list">'
+  return '<div class="section-title source-ui-hidden"><h2>Sumber</h2></div><div class="source-list source-ui-hidden">'
     + srcs.map(s=>'<div class="source-item"><span class="si-type">'+esc(s.type)+'</span><span><b>'+esc(s.title)+'</b>'+(s.note?'<br><span class="muted small">'+esc(s.note)+'</span>':"")+'</span></div>').join("")
     + '</div>';
 }
@@ -10274,11 +10281,155 @@ App.router = router; // hook untuk pengujian & debugging
 </script>
 
 
+<style id="SILMIKAFFAH_BUKUBIRU_10MENU_PATCH">
+/* Buku Biru final: Home 3 kolom, bottom-nav icon only. */
+.bottom-nav .bn-item span{display:none!important}
+.bottom-nav .bn-item{min-height:52px}
+</style>
+<script id="SILMIKAFFAH_BUKUBIRU_10MENU_PATCH_JS">
+(function(){
+  const old=DB.MENUS.slice();
+  const byId=id=>old.find(m=>m.id===id);
+  const cloneMaterials=ids=>ids.flatMap(id=>((byId(id)||{}).materials||[]).map(x=>JSON.parse(JSON.stringify(x))));
+  const menus=[
+    {id:1,num:'01',name:'Rukun Islam',icon:'pillar',short:'Lima pilar Islam',desc:'Syahadat, Shalat, Zakat, Puasa, serta Haji & Umrah.',materials:cloneMaterials([1])},
+    {id:2,num:'02',name:'Rukun Iman',icon:'iman',short:'Enam rukun iman',desc:'Iman kepada Allah, Malaikat, Kitab, Rasul, Hari Akhir, Qada & Qadar.',materials:cloneMaterials([2])},
+    {id:3,num:'03',name:'Ilmu & Belajar',icon:'book',short:'Al-Qur’an, hadis, fikih, bahasa dan pembelajaran Islam',desc:'Ruang pembelajaran Islam yang menggabungkan Al-Qur’an, hadis, sunnah, fikih, pendidikan, bahasa Arab, dakwah, dan pembelajaran.',materials:cloneMaterials([3,4,11,12,14])},
+    {id:4,num:'04',name:'Keluarga & Muamalah',icon:'family',short:'Keluarga, muamalah dan kehidupan sosial',desc:'Pembahasan keluarga, transaksi, waris, dan kehidupan bermuamalah sesuai prinsip Islam.',materials:cloneMaterials([5])},
+    {id:5,num:'05',name:'Akhlak & Adab',icon:'akhlak',short:'Akhlak, adab dan penyucian diri',desc:'Akhlak mulia, adab keseharian, dan tazkiyah.',materials:cloneMaterials([7])},
+    {id:6,num:'06',name:'Sejarah & Peristiwa Islam',icon:'sirah',short:'Sirah, sejarah, tokoh dan peradaban',desc:'Sirah Nabi, sejarah Islam, tokoh, kalender peristiwa, kota, masjid, dan warisan peradaban Islam.',materials:cloneMaterials([8,9,10,13])},
+    {id:7,num:'07',name:'Kitab',icon:'book',short:'Ensiklopedia kitab',desc:'Kitab akidah, fikih, hadis, tasawuf, tafsir, keluarga, dan kitab klasik Nusantara.',materials:cloneMaterials([15])},
+    {id:8,num:'08',name:'Doa & Dzikir',icon:'doa',short:'Doa harian dan dzikir',desc:'Doa harian, doa ibadah, dzikir pagi-petang, dan dzikir setelah shalat.',materials:cloneMaterials([6])},
+    {id:9,num:'09',name:'Alat Muslim',icon:'tools',short:'Fitur praktis untuk ibadah',desc:'Kumpulan alat dan kalkulator yang membantu kebutuhan ibadah sehari-hari.',materials:[
+      {id:'kiblat',name:'Arah Kiblat'},
+      {id:'zakat',name:'Kalkulator Zakat'},
+      {id:'waris',name:'Kalkulator Waris'},
+      {id:'tasbih',name:'Tasbih Digital'},
+      {id:'kalender-hijriah',name:'Konversi & Kalender Hijriah'},
+      {id:'masjid-terdekat',name:'Masjid Terdekat'}
+    ]},
+    {id:10,num:'10',name:'Referensi & Koleksi',icon:'bookmark',short:'Sumber, referensi dan koleksi pengguna',desc:'Indeks sumber, referensi, koleksi tersimpan, dan materi rujukan Silmikaffah.',materials:[
+      {id:'referensi',name:'Referensi'},
+      {id:'sumber',name:'Sumber Materi'},
+      {id:'indeks',name:'Indeks Pengetahuan'},
+      {id:'koleksi',name:'Koleksi Saya'}
+    ]}
+  ];
+  const remap={1:1,2:2,3:3,4:3,5:4,6:8,7:5,8:6,9:6,10:6,11:3,12:3,13:6,14:3,15:7};
+  DB.ENTRIES.forEach(e=>{if(remap[e.menu])e.menu=remap[e.menu]});
+  // Feature entries moved to Alat Muslim.
+  const featureRemap={
+    'arah-kiblat-fitur':['kiblat','Arah Kiblat'],
+    'waris-kalkulator':['waris','Kalkulator Waris'],
+    'tasbih-digital':['tasbih','Tasbih Digital'],
+    'konversi-hijriah-fitur':['kalender-hijriah','Konversi & Kalender Hijriah'],
+    'masjid-terdekat':['masjid-terdekat','Masjid Terdekat']
+  };
+  DB.ENTRIES.forEach(e=>{
+    if(featureRemap[e.id]){e.menu=9;e.material=featureRemap[e.id][0];}
+  });
+  // Zakat calculator is a feature of Alat Muslim while the substantive Zakat material remains under Rukun Islam.
+  DB.ENTRIES.forEach(e=>{if(e.id==='zakat-kalkulator'||e.id==='kalkulator-zakat'){e.menu=9;e.material='zakat';}});
+  DB.MENUS.length=0; menus.forEach(m=>DB.MENUS.push(m));
+  DB.BUKU_BIRU={version:'FINAL-10',menus:menus.map(m=>({id:m.id,num:m.num,name:m.name})),bottomNav:['home','rukun-iman','rukun-islam','koleksi','settings']};
+  // Keep a single canonical category resolver after consolidation.
+  window.SILMIKAFFAH_MENU_REMAP=remap;
+})();
+</script>
+<script id="SILMIKAFFAH_SUBMATERI_REPAIR_20260915">
+(function(){
+ const DB=window.SILMIKAFFAH;
+ const set=(sub, ids)=>ids.forEach(id=>DB.ENTRIES.filter(e=>e.id===id).forEach(e=>e.sub=sub));
+ // Normalize existing shalat submaterial IDs to the canonical master.
+ set('syarat-wajib',['syarat-wajib-shalat']);
+ set('syarat-sah',['syarat-sah-shalat']);
+ set('rukun',['rukun-shalat']);
+ set('wajib-hukum',['wajib-shalat']);
+ set('sunnah-hukum',['sunnah-shalat']);
+ set('makruh',['makruh-shalat']);
+ set('pembatal',['pembatal-shalat']);
+ set('jamaah',['jamaah-shalat']);
+ set('bacaan',['bacaan-takbir','bacaan-iftitah','bacaan-fatihah','bacaan-rukuk','bacaan-itidal','bacaan-sujud','bacaan-duduk','bacaan-tasyahud','bacaan-shalawat','bacaan-salam','doa-qunut','niat-shalat','tasyahud-awal','doa-akhir-tasyahud']);
+ set('tata-cara',['tata-cara-shalat']);
+ set('gerakan',['gerakan-takbir','gerakan-berdiri','gerakan-rukuk','gerakan-itidal','gerakan-sujud','gerakan-duduk-sujud','gerakan-tasyahud','gerakan-salam']);
+ set('wajib',['shalat-wajib','subuh','zuhur','asar','maghrib','isya']);
+ set('sunnah',['shalat-sunnah','rawatib','dhuha','tahajud','witir','tarawih','istikharah','hajat','tahiyyatul-masjid','gerhana','shalat-taubat','istisqa']);
+ set('kondisi-khusus',['shalat-musafir','jamak','qashar','shalat-sakit','shalat-jenazah','jadwal-shalat','shalat-khauf','sujud-tilawah','sujud-syukur','arah-kiblat-fitur']);
+ set('jenis',['zakat-fitrah','zakat-mal','zakat-emas','zakat-perak','zakat-uang','zakat-perdagangan','zakat-pertanian','zakat-peternakan','zakat-penghasilan']);
+ set('ketentuan',['zakat-nishab','zakat-haul','mustahik','muzakki','penyaluran-zakat']);
+ set('fitur',['zakat-kalkulator']);
+ set('wajib',['puasa-ramadan','niat-puasa','syarat-puasa','rukun-puasa','waktu-puasa','imsak','sahur','berbuka','adab-ramadan','pembatal-puasa','tidak-membatalkan','puasa-sakit','puasa-musafir','qadha-puasa','fidyah','itikaf','lailatul-qadar','idulfitri','kafarat-puasa']);
+ set('sunnah',['puasa-sunnah','puasa-senin-kamis','puasa-ayyamul-bidh','puasa-arafah','puasa-asyura','puasa-tasua','puasa-syawal','puasa-daud']);
+ set('ramadan',['tadarus','amalan-ramadan','ramadan-zakat-fitrah']);
+ set('tauhid',['tauhid','tauhid-rububiyah','tauhid-uluhiyah','asma-wa-sifat','syirik','kufur','nifaq']);
+ set('asmaul-husna',['asmaul-husna','asma-']);
+ set('sifat',['sifat-allah','sifat-20-wajib','sifat-20-mustahil','sifat-jaiz-allah']);
+ set('10-malaikat',['iman-kepada-malaikat']);
+ set('nabi-rasul-25',['nabi-rasul-25']);
+ set('surga',['surga','nama-nama-surga']);
+ set('neraka',['neraka','nama-nama-neraka']);
+ set('pilihan',['hadis']);
+ set('kitab',['riyadhus-shalihin','hadis-arbain','hadis-kitab-bukhari','hadis-kitab-muslim','hadis-kitab-abu-dawud']);
+ // Existing "koleksi-kitab" is an old alias; normalize it to the final Kitab submaterial.
+ DB.ENTRIES.forEach(e=>{if(e.menu===3 && e.material==='hadis' && e.sub==='koleksi-kitab')e.sub='kitab';});
+ set('setelah-shalat',['doa-setelah-shalat','dzikir-setelah-shalat']);
+ set('ramadan',['doa-ramadan','doa-niat-puasa']);
+ set('toilet',['doa-masuk-toilet','doa-keluar-toilet']);
+ set('rezeki',['doa-rezeki','doa-hutang']);
+ set('wudhu',['doa-setelah-wudhu']);
+ set('perjalanan',['doa-kembali-bepergian','doa-safar-naik-kendaraan']);
+ set('belajar',['doa-setelah-belajar','doa-belajar-mulai']);
+ set('harian',['doa-bercermin']);
+ set('cuaca',['doa-hujan-turun','doa-petir','doa-angin-kencang']);
+ set('kesedihan',['doa-sedih-gundah']);
+ set('kesulitan',['doa-musibah']);
+ set('quran',['doa-nabi-adam','doa-nabi-yunus','doa-nabi-musa','doa-nabi-ibrahim','doa-nabi-zakariya']);
+ set('perlindungan',['doa-perlindungan-umum','doa-perlindungan-jin-sihir']);
+ set('kematian',['doa-takziah','doa-ziarah-kubur']);
+ set('tidur',['doa-bangun-tidur']);
+ set('makan',['doa-sebelum-makan','doa-setelah-makan']);
+ set('masjid',['doa-masuk-masjid','doa-keluar-masjid']);
+ set('rumah',['doa-masuk-rumah','doa-keluar-rumah']);
+ set('pakaian',['doa-pakaian-baru']);
+ set('taubat',['doa-ampunan-taubat']);
+ set('istikharah',['doa-istikharah']);
+ set('haji',['doa-haji-talbiyah']);
+ set('keluarga',['doa-orang-tua','doa-anak-keturunan']);
+ set('tawakkal',['doa-tawakal-hasbunallah','doa-syukur-nikmat']);
+ set('pagi',['dzikir-pagi']);
+ set('petang',['dzikir-petang']);
+ set('setelah-shalat',['dzikir-setelah-shalat']);
+ set('tidur',['dzikir-sebelum-tidur']);
+ set('fitur',['tasbih-digital']);
+ set('terpuji',['silaturahmi','menjaga-lisan']);
+ set('tercela',['akhlak-tercela','dendam','dusta','suudzan']);
+ set('kepada-allah',['adab-kepada-allah']);
+ set('kepada-rasul',['adab-kepada-rasul']);
+ set('guru',['adab-guru']);
+ set('sesama',['adab-sesama']);
+ set('bertamu',['adab-bertamu']);
+ set('orang-tua',['adab-orangtua']);
+ set('makan',['adab-makan']);
+ set('tidur',['adab-tidur']);
+ set('belajar',['adab-belajar']);
+ set('berbicara',['adab-berbicara']);
+ set('media',['adab-mediasosial']);
+ set('pakaian',['adab-berpakaian']);
+ set('pembinaan',['pembinaan-diri']);
+ // IQRA already has one canonical submaterial; attach the overview entry to it.
+ set('level',['iqra']);
+ // Keep a small audit record for the next consolidation pass; no entries are added or deleted.
+ DB.SUBMATERI_REPAIR={version:'2026-09-15',policy:'existing entries only',entries:DB.ENTRIES.length};
+})();
+</script>
+
 <script id="SILMIKAFFAH_FINAL_INIT_20260914">
 (function(){
   function boot(){ if(window.__SILMIKAFFAH_STARTED) return; window.__SILMIKAFFAH_STARTED=true; try{ init(); }catch(err){ console.error(err); } }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot,{once:true}); else boot();
 })();
 </script>
+
+
 </body>
 </html>
